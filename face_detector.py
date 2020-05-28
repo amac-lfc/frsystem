@@ -30,11 +30,13 @@ def convertToRGB(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 def save(face_list, path):
-  print(face_list)
+  #print(face_list)
   names = []
- # for face in face_list:
-  name = 'cropped' + '-crop.png'
-  cv2.imwrite(os.path.join(path , name), face_list[0])
-  names.append(name)
-  print(names)  
+  for face in face_list:
+    #name = 'cropped' + '-crop.png'
+    #cv2.imwrite(os.path.join(path , name), face_list[0])
+    cv2.imshow('face',face)
+    cv2.waitKey(0)
+    names.append(name)
+  #print(names)  
   return names
