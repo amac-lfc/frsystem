@@ -8,11 +8,11 @@ import numpy as np
 from face_detector import detect_faces, save
 import cv2
 
-DATA_DIRECTORY = '/home/arnur/face-recognition/datasets/trainset/'
+DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset'
 EPSILON = 0.40
 
 def verifyFace(img1, img2):
-    haar_face_cascade = cv2.CascadeClassifier('util/opencv/haarcascade_frontalface_default.xml')
+    haar_face_cascade = cv2.CascadeClassifier('../util/opencv/haarcascade_frontalface_default.xml')
 
     img1 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))[0][0]
     img2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))[0][0]
@@ -21,7 +21,7 @@ def verifyFace(img1, img2):
     plot_img2 = save(img2, DATA_DIRECTORY)
 
     model = VGGFace()
-    model.setWeights('/home/arnur/datasets/vgg_face_weights.h5')
+    model.setWeights('/home/arnur/util/vgg_face_weights.h5')
     vgg_face_descriptor = Model(inputs=model.model.layers[0].input, outputs=model.model.layers[-2].output)
 
     img1_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img1[0])))[0,:]
