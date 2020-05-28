@@ -41,7 +41,7 @@ def verifyFace(img1, img2):
     else:
         print("not verified identity match!")
     
-    plot_faces(DATA_DIRECTORY, plot_img1[0], plot_img2[0])
+    plot_faces(DATA_DIRECTORY, plot_img1, plot_img2)
 
 def plot_faces(source_folder, image1, image2):
     f = plt.figure()
