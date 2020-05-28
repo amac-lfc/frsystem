@@ -8,7 +8,7 @@ import numpy as np
 from face_detector import detect_faces, save
 import cv2
 
-DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset'
+DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset/'
 EPSILON = 0.40
 
 def verifyFace(img1, img2):
