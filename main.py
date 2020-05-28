@@ -14,18 +14,21 @@ EPSILON = 0.40
 def verifyFace(img1, img2):
     haar_face_cascade = cv2.CascadeClassifier('../util/opencv/haarcascade_frontalface_default.xml')
 
-    img1 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))[0][0]
-    img2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))[0][0]
+    faces_list = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))
+    faces_list2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))
     #cv2.imshow('img', img1)
-    plot_img1 = save(img1, DATA_DIRECTORY)
-    plot_img2 = save(img2, DATA_DIRECTORY)
+    for face in faces_list:
+        plot_img1 = save(face, DATA_DIRECTORY, img1)
+
+    for face in faces_list2:
+        plot_img2 = save(face, DATA_DIRECTORY, img2)    
 
     model = VGGFace()
     model.setWeights('/home/arnur/util/vgg_face_weights.h5')
     vgg_face_descriptor = Model(inputs=model.model.layers[0].input, outputs=model.model.layers[-2].output)
 
-    img1_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img1[0])))[0,:]
-    img2_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img2[0])))[0,:]
+    img1_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img1)))[0,:]
+    img2_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img2)))[0,:]
     
     cosine_similarity = findCosineSimilarity(img1_vector, img2_vector)
     euclidean_distance = findEuclideanDistance(img1_vector, img2_vector)

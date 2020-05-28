@@ -24,19 +24,16 @@ def detect_faces(cascade, test_image, scaleFactor = 1.1):
         cv2.rectangle(image_copy, (x, y), (x+w, y+h), (255, 0, 0), 5)
         face_crop.append(to_crop[y:y+h, x:x+w])
 
-    return face_crop, image_copy
+    return face_crop
 
 def convertToRGB(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-def save(face_list, path):
+def save(face, path, img_name):
   #print(face_list)
-  names = []
-  for face in face_list:
-    #name = 'cropped' + '-crop.png'
-    #cv2.imwrite(os.path.join(path , name), face_list[0])
-    cv2.imshow('face',face)
-    cv2.waitKey(0)
-    names.append(name)
+  
+  name = img_name + '-crop.png'
+  cv2.imwrite(os.path.join(path , name), face)
+  
   #print(names)  
-  return names
+  return name
