@@ -59,3 +59,6 @@ if __name__ == "__main__":
     #verifyFace("arnur1.png", "sam1.png")
    # verifyFace("arnur1.png", "ais1.png")
     verifyFace("sam1.png", "sam2.png")
+    verifyFace("sam1.png", "ais1.png")
+    verifyFace("sam1.png", "arnur2.png")
+
