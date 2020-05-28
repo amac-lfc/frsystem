@@ -16,7 +16,7 @@ def verifyFace(img1, img2):
 
     img1 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))[0][0]
     img2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))[0][0]
-
+    cv2.imshow(img1)
     plot_img1 = save(img1, DATA_DIRECTORY)
     plot_img2 = save(img2, DATA_DIRECTORY)
 
