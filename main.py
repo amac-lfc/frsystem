@@ -6,6 +6,7 @@ from PIL import Image, ImageFile
 import matplotlib.pyplot as plt
 import numpy as np
 from face_detector import detect_faces, save
+import random
 import cv2
 
 DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset/'
@@ -16,7 +17,7 @@ def verifyFace(img1, img2):
 
     faces_list = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))
     faces_list2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))
-    #cv2.imshow('img', img1)
+   
     for face in faces_list:
         plot_img1 = save(face, DATA_DIRECTORY, img1)
 
@@ -24,7 +25,6 @@ def verifyFace(img1, img2):
         plot_img2 = save(face, DATA_DIRECTORY, img2)    
 
     model = VGGFace()
-    model.setWeights('/home/arnur/util/vgg_face_weights.h5')
     vgg_face_descriptor = Model(inputs=model.model.layers[0].input, outputs=model.model.layers[-2].output)
 
     img1_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img1)))[0,:]
@@ -51,15 +51,16 @@ def plot_faces(source_folder, image1, image2):
     f.add_subplot(1,2, 2)
     plt.imshow(image.load_img(source_folder + str(image2)))
     plt.xticks([]); plt.yticks([])
+    plt.savefig(str(random.randint(1,50)) + 'plot.png')
     plt.show(block=True)
     print("-----------------------------------------")
 
 if __name__ == "__main__":
-   # verifyFace("arnur1.png", "arnur2.png")
-    #verifyFace("arnur1.png", "sam1.png")
-   # verifyFace("arnur1.png", "ais1.png")
-    #verifyFace("sam1.png", "sam2.png")
-    #verifyFace("sam1.png", "arnur.png")
+    verifyFace("arnur1.png", "arnur2.png")
+    verifyFace("arnur1.png", "sam1.png")
+    verifyFace("arnur1.png", "ais1.png")
+    verifyFace("sam1.png", "sam2.png")
+    verifyFace("sam1.png", "arnur.png")
     verifyFace("arnur3.png", "arnur-mask.png")
     verifyFace("sam1.png", "arnur3.png")
     verifyFace("arnur2.png", "arnur-mask.png")

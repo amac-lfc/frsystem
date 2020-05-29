@@ -52,9 +52,7 @@ class VGGFace:
     self.model.add(Convolution2D(2622, (1, 1)))
     self.model.add(Flatten())
     self.model.add(Activation('softmax'))
-
-  def setWeights(self, path):
-    self.model.load_weights(path)
+    self.model.load_weights('/home/arnur/util/vgg_face_weights.h5')
   
   def preprocess_image(self, path):
     self.img = load_img(path, target_size=(224, 224))

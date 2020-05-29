@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import os
 import random
 
-
-
 def detect_faces(cascade, test_image, scaleFactor = 1.1):
 
     face_crop = []
@@ -30,10 +28,6 @@ def convertToRGB(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 def save(face, path, img_name):
-  #print(face_list)
-  
-  name = img_name + '-crop.png'
-  cv2.imwrite(os.path.join(path , name), face)
-  
-  #print(names)  
+  name = img_name[:-4] + '-crop.png'
+  cv2.imwrite(os.path.join(path , name), face) 
   return name
