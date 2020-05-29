@@ -11,7 +11,7 @@ import cv2
 
 DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset/'
 PLOTS = '/home/arnur/facialdetection/datasets/plots/'
-EPSILON = 0.40
+EPSILON = 0.25
 
 def verifyFace(img1, img2):
     haar_face_cascade = cv2.CascadeClassifier('../util/opencv/haarcascade_frontalface_default.xml')
@@ -58,7 +58,9 @@ def plot_faces(source_folder, image1, image2):
 
 if __name__ == "__main__":
     verifyFace("arnur1.png", "ais1.png")
+    verifyFace("arnur1.png", "arnur2.png")
     verifyFace("steven.jpg", "steven1.jpg")
+    verifyFace("steven.jpg", "sam1.png")
     verifyFace("sam1.png", "sam2.png")
     verifyFace('ais1.png', 'ais2.png')
     verifyFace("sam1.png", "arnur1.png")
