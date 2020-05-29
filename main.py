@@ -58,6 +58,7 @@ def plot_faces(source_folder, image1, image2):
 
 if __name__ == "__main__":
     verifyFace("arnur1.png", "ais1.png")
+    verifyFace("steven.jpg", "steven1.jpg")
     verifyFace("sam1.png", "sam2.png")
     verifyFace('ais1.png', 'ais2.png')
     verifyFace("sam1.png", "arnur1.png")
