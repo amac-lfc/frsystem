@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import random
-
+CROPED = '/home/arnur/facialdetection/datasets/cropped-faces/'
 def detect_faces(cascade, test_image, scaleFactor = 1.1):
 
     face_crop = []
@@ -20,6 +20,8 @@ def detect_faces(cascade, test_image, scaleFactor = 1.1):
     
     for (x, y, w, h) in faces_rect:
         cv2.rectangle(image_copy, (x, y), (x+w, y+h), (255, 0, 0), 5)
+        name = str(random.randint(1,50))
+        cv2.imwrite(os.path.join(CROPED , name + 'cropped.png'), image_copy)
         face_crop.append(to_crop[y:y+h, x:x+w])
 
     return face_crop
