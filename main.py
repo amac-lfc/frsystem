@@ -10,6 +10,7 @@ import random
 import cv2
 
 DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset/'
+PLOTS = '/home/arnur/facialdetection/datasets/plots/'
 EPSILON = 0.40
 
 def verifyFace(img1, img2):
@@ -51,19 +52,16 @@ def plot_faces(source_folder, image1, image2):
     f.add_subplot(1,2, 2)
     plt.imshow(image.load_img(source_folder + str(image2)))
     plt.xticks([]); plt.yticks([])
-    plt.savefig(str(random.randint(1,50)) + 'plot.png')
+    plt.savefig(PLOTS + str(random.randint(1,50)) + 'plot.png')
     plt.show(block=True)
     print("-----------------------------------------")
 
 if __name__ == "__main__":
-    verifyFace("arnur1.png", "arnur2.png")
-    verifyFace("arnur1.png", "sam1.png")
     verifyFace("arnur1.png", "ais1.png")
     verifyFace("sam1.png", "sam2.png")
-    verifyFace("sam1.png", "arnur.png")
-    verifyFace("arnur3.png", "arnur-mask.png")
+    verifyFace('ais1.png', 'ais2.png')
+    verifyFace("sam1.png", "arnur1.png")
     verifyFace("sam1.png", "arnur3.png")
-    verifyFace("arnur2.png", "arnur-mask.png")
 
 
 
