@@ -52,8 +52,8 @@ def plot_faces(source_folder, image1, image2):
     f.add_subplot(1,2, 2)
     plt.imshow(image.load_img(source_folder + str(image2)))
     plt.xticks([]); plt.yticks([])
-    plt.savefig(PLOTS + str(random.randint(1,50)) + 'plot.png')
-    plt.show(block=True)
+    plt.savefig(PLOTS + image1[:-4] + "_" + image2[:-4] + '_plot.png')
+    plt.show()
     print("-----------------------------------------")
 
 if __name__ == "__main__":
