@@ -1,70 +1,104 @@
-from vgg_face import VGGFace
-from algorithms import findCosineSimilarity, findEuclideanDistance
-from keras.models import Model
-from keras.preprocessing import image
-from PIL import Image, ImageFile
-import matplotlib.pyplot as plt
 import numpy as np
-from face_detector import detect_faces, save
-import random
+import pandas as pd
 import cv2
+import csv
+import os
+# Run Tensorflow on CPU
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-DATA_DIRECTORY = '/home/arnur/facialdetection/datasets/trainset/'
-PLOTS = '/home/arnur/facialdetection/datasets/plots/'
-EPSILON = 0.25
+import tensorflow as tf
+from faceDetector import getFaceEmbeddings, isMatch, plotFaces
 
-def verifyFace(img1, img2):
-    haar_face_cascade = cv2.CascadeClassifier('../util/opencv/haarcascade_frontalface_default.xml')
+KNOWN_FACES = '/Users/newuser/Projects/facialdetection/Identity-Match/datasets/known_faces'
 
-    faces_list = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img1))
-    faces_list2 = detect_faces(haar_face_cascade, cv2.imread(DATA_DIRECTORY + img2))
-   
-    for face in faces_list:
-        plot_img1 = save(face, DATA_DIRECTORY, img1)
+def extractKnownFacesToCSV(folder):
+    """
+    This function extracts faces from images in a given folder and saves them as known_faces.csv
 
-    for face in faces_list2:
-        plot_img2 = save(face, DATA_DIRECTORY, img2)    
+    ## Args:
+        folder (string): path to the folder containing images of known identities
+    """
+    fields = ["Name", "Embedding", "Bound Box"]
 
-    model = VGGFace()
-    vgg_face_descriptor = Model(inputs=model.model.layers[0].input, outputs=model.model.layers[-2].output)
+    with open("known_faces.csv", "w") as csvfile:
 
-    img1_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img1)))[0,:]
-    img2_vector = vgg_face_descriptor.predict(model.preprocess_image(DATA_DIRECTORY + str(plot_img2)))[0,:]
+        # creating a csv writer object  
+        csvwriter = csv.writer(csvfile)  
+        
+        # writing the fields  
+        csvwriter.writerow(fields)
+        
+        for f in os.listdir(folder):
+            # ignoring hidden files
+            if f[0] == ".":
+                continue
+
+            embedding_dict = getFaceEmbeddings(os.path.join(folder,f))
+
+            embedding = list(embedding_dict["embedding"][0][0])
+
+            csvwriter.writerow([ embedding_dict["name"][0], embedding, embedding_dict["boundbox"][0][0] ])
+
+def detectIdentities(filename, showFigure=False, printInfo=False):
+    """
+    This function detects identites in an image, if identity is unknown it returns "Unknown"
+
+    ## Args:
+        filename (string): path to the image 
+        showFigure (bool): whether to show the resulting figure
+        printInfo (bool): whether to print face detection info
+
+    ## Returns
+        list of detected names
+    """
     
-    cosine_similarity = findCosineSimilarity(img1_vector, img2_vector)
-    euclidean_distance = findEuclideanDistance(img1_vector, img2_vector)
-    
-    print("Cosine similarity: ",cosine_similarity)
-    print("Euclidean distance: ",euclidean_distance)
-    
-    if(cosine_similarity < EPSILON):
-        print("verified identity match!")
-    else:
-        print("not verified identity match!")
-    
-    plot_faces(DATA_DIRECTORY, plot_img1, plot_img2)
+    try:
+        df = pd.read_csv("known_faces.csv")
+    except FileNotFoundError:
+        print("known_faces.csv not found.")
 
-def plot_faces(source_folder, image1, image2):
-    f = plt.figure()
-    f.add_subplot(1,2, 1)
-    plt.imshow(image.load_img(source_folder + str(image1)))
-    plt.xticks([]); plt.yticks([])
-    f.add_subplot(1,2, 2)
-    plt.imshow(image.load_img(source_folder + str(image2)))
-    plt.xticks([]); plt.yticks([])
-    plt.savefig(PLOTS + image1[:-4] + "_" + image2[:-4] + '_plot.png')
-    plt.show()
-    print("-----------------------------------------")
+    known_embeddings = df.to_dict('r')
 
-if __name__ == "__main__":
-    verifyFace("arnur1.png", "ais1.png")
-    verifyFace("arnur1.png", "arnur2.png")
-    verifyFace("steven.jpeg", "steven1.jpeg")
-    verifyFace("steven.jpeg", "sam1.png")
-    verifyFace("sam1.png", "sam2.png")
-    verifyFace('ais1.png', 'ais2.png')
-    verifyFace("sam1.png", "arnur1.png")
-    verifyFace("sam1.png", "arnur3.png")
+    unknown_embeddings = getFaceEmbeddings(filename)
+
+    detected_names_dict = {"name" : [], "boundbox" : []}
+
+    for i in range(len(unknown_embeddings["name"])):
+
+        for j in range(len(known_embeddings)):
+
+            (is_match, info_string) = isMatch(known_embeddings[j]["Embedding"], unknown_embeddings["embedding"][i])
+            
+            if printInfo:
+                print(info_string)
+
+            if is_match:
+                detected_name = known_embeddings[j]["Name"]
+
+                if detected_name in detected_names_dict["name"]:
+                    continue
+
+                break   
+        else:
+            detected_name = "Unknown"
+            
+        boundbox = unknown_embeddings["boundbox"][i][0]
+        detected_names_dict["boundbox"].append(boundbox)
+        detected_names_dict["name"].append(detected_name)
+
+    if showFigure:
+        plotFaces(filename, detected_names_dict)
+    
+    return detected_names_dict["name"]   
+
+
+""" 
+Run extractKnownFacesToCSV to create a csv file of Known Faces, comment the call to detectIdentities below before running.
+"""
+#extractKnownFacesToCSV(KNOWN_FACES)
+
+print(detectIdentities("/Users/newuser/Projects/facialdetection/Identity-Match/datasets/unknown_faces/unknown5.jpg", showFigure=True, printInfo=True))
+
 
 
 

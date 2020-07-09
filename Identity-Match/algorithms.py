@@ -1,6 +1,6 @@
 import numpy as np
 
-def findCosineSimilarity(source_representation, test_representation):
+def findCosineScore(source_representation, test_representation):
     a = np.matmul(np.transpose(source_representation), test_representation)
     b = np.sum(np.multiply(source_representation, source_representation))
     c = np.sum(np.multiply(test_representation, test_representation))
