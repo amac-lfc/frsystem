@@ -53,15 +53,17 @@ def detectFaces(filename, required_size=(224, 224)):
 
         # extract the face
         face = pixels[y1:y2, x1:x2]
-        plt.imshow(face)
-        plt.show()
+
+        # plt.imshow(face)
+        # plt.show()
+
         # align the face for better precision
-        
         landmarks = results[i]["keypoints"]
         face = faceAligner(pixels, landmarks, results[i]['box'])
         
-        plt.imshow(face)
-        plt.show()
+        # plt.imshow(face)
+        # plt.show()
+        
         # resize pixels to the model size
         image = Image.fromarray(face)
         image = image.resize(required_size)
@@ -145,6 +147,7 @@ def isMatch(known_embedding, candidate_embedding, threshold=0.555):
     
     candidate_embedding = np.asarray(candidate_embedding, dtype=np.float)
     candidate_embedding = np.squeeze(candidate_embedding)
+
 	# calculate distance between embeddings
     score = findCosineScore(known_embedding, candidate_embedding)
     score = round(score, 3)
@@ -197,7 +200,7 @@ def plotFaces(image, info_dict):
 
     ## Args:
         image (string): path to image
-        info_dict (dict): [description]
+        info_dict (dict): dictionary of face boundbox and name
     """
     im = openImage(image)
     plt.imshow(im)
@@ -225,6 +228,5 @@ def plotFaces(image, info_dict):
 
         plt.text(x1, y1 - 30, name, fontdict={"color" : "white"}, bbox=dict(facecolor='red' if name == 'Unknown' else 'blue', alpha=1))
         
-    #plt.savefig(image[:-4] + '_plot.jpg')
     plt.show()
 
