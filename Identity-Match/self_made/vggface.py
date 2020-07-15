@@ -7,9 +7,8 @@ from keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flat
 
 from keras.preprocessing.image import load_img, save_img, img_to_array
 
-WEIGHTS_FOLDER = "util/vgg_face_weights.h5"
 
-def VGGFace():
+def VGGFace(WEIGHTS_FOLDER="/Users/newuser/Projects/facialdetection/Identity-Match/util/vgg_face_weights.h5"):
   """
   creates VGGFace model and loads weights for it
     

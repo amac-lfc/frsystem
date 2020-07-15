@@ -96,7 +96,7 @@ def getFaceEmbeddings(filename):
     # Create a dictionary of face embeddings
     face_embeddings_dict = {"name" : [], "embedding" : [], "boundbox" : [] }
 
-	# extract faces from an image 
+	  # extract faces from an image 
     faces_dict = detectFaces(filename)
 
     # instantiate model for obtaining face embeddings

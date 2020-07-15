@@ -71,7 +71,7 @@ def detectIdentities(filename, showFigure=False, printInfo=False):
             
             if printInfo:
                 print(info_string)
-
+    
             if is_match:
                 detected_name = known_embeddings[j]["Name"]
 
@@ -97,7 +97,7 @@ Run extractKnownFacesToCSV to create a csv file of Known Faces, comment the call
 """
 #extractKnownFacesToCSV(KNOWN_FACES)
 
-print(detectIdentities("/Users/newuser/Projects/facialdetection/Identity-Match/datasets/unknown_faces/unknown5.jpg", showFigure=True, printInfo=True))
+#print(detectIdentities("/Users/newuser/Projects/facialdetection/Identity-Match/datasets/unknown_faces/unknown5.jpg", showFigure=True, printInfo=True))
 
 
 
