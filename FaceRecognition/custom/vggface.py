@@ -1,12 +1,8 @@
-import numpy as np
 import os
 import requests
-
+import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flatten, Dense, Dropout, Activation
-
-#from tensorflow.keras.preprocessing.image import load_img, save_img, img_to_array
-
 
 def VGGFace(WEIGHTS_FOLDER="/Users/newuser/Projects/facialdetection/FaceRecognition/custom/util/vgg_face_weights.h5"):
   """

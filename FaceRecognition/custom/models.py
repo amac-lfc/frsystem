@@ -1,5 +1,5 @@
-from tensorflow.keras import Model
 from vggface import VGGFace
+from tensorflow.keras import Model
 from tensorflow.keras.layers import Flatten, Input
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model

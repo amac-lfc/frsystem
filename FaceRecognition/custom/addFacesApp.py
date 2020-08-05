@@ -6,9 +6,12 @@ import re
 import os
 from FaceRecognitionSystem import FaceRecognitionSystem
 
+DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
+EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
+
 def addFaceToDatabase():
 	
-    fr = FaceRecognitionSystem() 
+    fr = FaceRecognitionSystem(160, DB, EMBEDDINGS) 
 
     method = input("Which method would you like to use? Type \"camera\" or \"file\"\n")
 
@@ -43,7 +46,7 @@ def addFacesUsingLoop(base=None):
     if base is None:
         raise AttributeError("Please input the directory of people")
     
-    fr = FaceRecognitionSystem()
+    fr = FaceRecognitionSystem(160, DB, EMBEDDINGS)
     
     for folder in os.listdir(base):
         if folder[0] == ".":

@@ -1,11 +1,17 @@
+
+using_face_recognition/
+
 # .filename
 .*
 
 # utils
-util/
+face_detector/
+
+#large files
+vgg_face_weights.h5
 
 # data
-datasets/
+*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

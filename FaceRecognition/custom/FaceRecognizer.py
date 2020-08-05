@@ -1,12 +1,17 @@
 
 from os import environ
 environ['TF_CPP_MIN_LOG_LEVEL']='3'
+
+
 import cv2
 from  numpy import argmin
 from FaceRecognitionSystem import FaceRecognitionSystem
 from time import sleep
 
-fr = FaceRecognitionSystem()
+DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
+EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
+
+fr = FaceRecognitionSystem(160, DB, EMBEDDINGS)
 db = fr.db
 
 RED = (235, 69, 17)

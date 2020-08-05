@@ -4,8 +4,9 @@ import sys
 sys.path.insert(1, '/Users/newuser/Projects/facialdetection/FaceRecognition/custom')
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-
 import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
+
 import time
 import cv2
 import numpy as np
