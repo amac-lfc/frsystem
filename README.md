@@ -1,9 +1,17 @@
-# James Rocco Facial Recognition Project
-A gentle exploration of Deep Learning in the context of Face Recognition.  
-## Identity-Match
-Using Convolutional Neural Network to extract a vector representation of a given face and computing distance between vectors to verify same person.
-## Mask-No-Mask-Classifier
-Experimenting with Transfer Learning to obtain a model with the best face mask detection performance metrics.
+# Real-time COVID-19 Face Mask Recognition.
+A gentle exploration of Deep Learning in the context of Face Recognition. 
+The project is structured into three directories:
+1. **FaceRecognition/**
+   A system that simplifies face extraction, recognition, and storage.
+2. **MaskRecognition/**
+   A python notebook describing the process of training and testing a face mask detector model
+3. **MaskFaceRecognition/**
+   A program that uses functionalities of FaceRecogniton/ combined with the trained model from MaskRecognition/ to conduct mask vs name recognition.
+## FaceRecognition/
+
+## MaskRecognition/
+
+## Mask Recognition/
 
 ## Useful Resources
 **DataCamp**
