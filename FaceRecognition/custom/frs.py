@@ -1,7 +1,7 @@
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
+from os import environ
+environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
 
 import cv2 
@@ -193,8 +193,32 @@ class FaceRecognitionSystem(object):
         return embeddings
         
     def detectFaces(self, image):
-        faces = self.detector.detect_faces(image)
+        
+        """
+        ### Description:
+            Finds faces on a given image array and 
+            returns list of location coordinates and 
+            facial features coordinates.
 
+        ### Returns:
+            (list): list of face location bounding box coordinates
+            (list): list of facial features dictionaries
+            
+        ```python
+            
+        boxes = [ (x1, y1, w1, h1), (x2, y2, w2, h2), ...]
+        features = [
+                     {
+                        "left_eye" : (x1, y1),
+                        "right_eye" : (x1, y1),
+                        "nose" : (x1, y1)
+                     },
+                     {   
+                        ...
+                     }
+                   ]```
+        """
+        faces = self.detector.detect_faces(image)
         bboxes = [] # face locations coordinates
         features = [] # facial features coordinates
 
@@ -216,10 +240,10 @@ class FaceRecognitionSystem(object):
         return [{ "left_eye": face["keypoints"]["left_eye"],
                 "right_eye": face["keypoints"]["right_eye"],
                 "nose": face["keypoints"]["nose"] } for face in faces]
-        
-    def faceDistance(self, 
-                     face_to_compare, 
-                     face_embeddings=None, 
+    
+    @staticmethod    
+    def faceDistance(face_to_compare, 
+                     face_embeddings, 
                      distance="euclidian"):
         """
         ### Description
@@ -243,9 +267,6 @@ class FaceRecognitionSystem(object):
             b = np.sum(np.multiply(source_representation, source_representation))
             c = np.sum(np.multiply(test_representation, test_representation))
             return 1 - (a / (np.sqrt(b) * np.sqrt(c)))
-
-        if face_embeddings is None:
-            face_embeddings, _ = self.getEmbeddingsList()
         
         if len(face_embeddings) == 0:
             return np.empty((0))
@@ -257,9 +278,9 @@ class FaceRecognitionSystem(object):
         else:
             raise AttributeError("wrong distance attribute. Choose 'euc' or 'cosine'")
     
-    def compareFaces(self, 
-                     face_embedding_to_check, 
-                     known_face_embeddings=None, 
+    @staticmethod
+    def compareFaces(face_embedding_to_check, 
+                     known_face_embeddings, 
                      distances=None, 
                      threshold=9):
         """
@@ -276,16 +297,13 @@ class FaceRecognitionSystem(object):
         ### Returns:
             A list of True/False values indicating which known_face_embeddings match the face embedding to check
         """
-       
-        if known_face_embeddings is None:
-            known_face_embeddings, __ = self.getEmbeddingsList()
         
         if distances is None:
-            return list(self.faceDistance(face_embedding_to_check, known_face_embeddings) <= threshold)
+            return list(FaceRecognitionSystem.faceDistance(face_embedding_to_check, known_face_embeddings) <= threshold)
         else:
             return list(distances <= threshold)
     
-    def getEmbeddingsList(self, embeddings=None):
+    def getEmbeddingsList(self):
         """
         ### Decription: 
             Given dictionary of embeddings return two lists 
@@ -299,7 +317,7 @@ class FaceRecognitionSystem(object):
             }
             
             returns 
-            embeddings_list = [ embedding1, embedding2, embedding3, embeddingN ]
+            embeddings_list = [ [embedding1], [embedding2], [embedding3], [embeddingN] ]
             id_list = [1, 1, 1, 1, 1, 2, 2, 2, ...]
         ```   
         ### Args
@@ -308,12 +326,11 @@ class FaceRecognitionSystem(object):
         ### Returns:  
             two lists with all ids and embeddings.
         """
+        embeddings = self.embeddings 
         
         embeddings_list = []  # known face embeddings
         id_list = []	   # unique ids of known face embeddings
 
-        if embeddings is None:
-            embeddings = self.embeddings
 
         for ref_id , embed_list in embeddings.items():
             if len(embed_list) > 1:
@@ -350,6 +367,15 @@ class FaceRecognitionSystem(object):
         return clf
         
     def addEmbeddingsFromFile(self, filename, name):
+        """
+        ### Description
+            Adds new face embeddings containing extracted features from a given image. 
+            Creates a unique id in database based on given name.
+            
+        ### Args:
+            filename (str): path to image.
+            name (str): name of person on image.
+        """
 
         image = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB)
         face_locations, facial_features = self.detectFaces(image)
@@ -368,11 +394,19 @@ class FaceRecognitionSystem(object):
                 self.embeddings[ref_id]=[face_embedding]
 
            
-            self.connection.dumpEmbeddings(self.embeddings)
+            self.connection.dumpEmbeddings()
         else:
             print("No faces detected in the given image.")
     
     def addEmbeddingsFromCamera(self, name):
+        """
+        ### Description
+            Using webcam adds new face embeddings containing extracted features to database. 
+            Creates a unique id in database based on given name.
+            
+        ### Args:
+            name (str): name of person on image.
+        """
 
         how_many = int(input("How many embeddings would you like to add?\n"))
         
@@ -421,7 +455,7 @@ class FaceRecognitionSystem(object):
                     break
                 
             if 'face_embedding' in locals():
-                self.connection.dumpEmbeddings(self.embeddings)
+                self.connection.dumpEmbeddings()
 
             
     
@@ -461,12 +495,28 @@ class DatabaseConnection(object):
         self.db = db
         self.embeddings = embeddings
         
-    def dumpEmbeddings(self, embeddings):
+    def dumpEmbeddings(self):
+        """
+        ### Description
+            updates database with new embeddings.
+        """
         with open(self.embeddings_file, "wb") as f:
             pickle.dump(self.embeddings, f)
         print("Embeddings added to database.")
 
     def generateFaceID(self, name):
+        """
+        ### Description
+            Given name of a person, checks for matches in database, 
+            if match found, returns its id, 
+            otherwise generates new id and returns it.
+
+        ### Args:
+            name (str): name of a person e.g. 'Steve Jobs'
+
+        ### Returns:
+            int: unique id belonging to given person's name
+        """
      
         for known_id, known_name in self.db.items():
             if name == known_name:

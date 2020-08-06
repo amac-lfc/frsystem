@@ -1,9 +1,9 @@
-
-
 import sys
 sys.path.insert(1, '/Users/newuser/Projects/facialdetection/FaceRecognition/custom')
+
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+
 import os 
 os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
@@ -13,11 +13,11 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.applications.xception import preprocess_input
-from FaceRecognitionSystem import FaceRecognitionSystem
+from frs import FaceRecognitionSystem
 
 def identifyPerson(face, 
-                   box=None, 
-                   facial_features=None):
+                   box, 
+                   facial_features):
    
     embedding = fr.faceEmbeddings(face, 
                                   face_locations=box, 
@@ -50,15 +50,11 @@ print("Loading Face Mask classifier...")
 #load my mask recognition model
 mask_classifier = load_model("models/xception")
 
-webcam = cv2.VideoCapture(0)
-import time
-time.sleep(4)  
-#read_this_frame = False
+webcam = cv2.VideoCapture(0) 
 
 while webcam.isOpened():
     
     _,frame = webcam.read()
-    cv2.imshow("COVID-19 Mask Classifier App", frame)
     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # BGR to RGB color channels	
     
     face_loc, face_features = fr.detectFaces(img)
@@ -88,8 +84,8 @@ while webcam.isOpened():
             else:
                 #label = "No Mask: {:.2f}%".format(withoutMask * 100)
                 label = identifyPerson(img, 
-                                       box=[(startX, startY, endX, endY)], 
-                                       facial_features=[feature])
+                                       [(startX, startY, endX, endY)], 
+                                       [feature])
                 color = (0, 60, 255) 
                 if label is "Unknown":
                     color = (255, 60, 0)            
@@ -98,10 +94,10 @@ while webcam.isOpened():
                 
             # ******** TOP **********
             cv2.rectangle(img, 
-                         (x, y - 20), # upper left
-                         (wid, y), # bottom right
-                         color, 
-                         -1) # -1 argument makes a filled rectangle
+                          (x, y - 20), # upper left
+                          (wid, y), # bottom right
+                          color, 
+                          -1) # -1 argument makes a filled rectangle
             # ******** TEXT **********
             cv2.putText(img, 
                         label, # text to draw

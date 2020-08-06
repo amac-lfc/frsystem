@@ -1,0 +1,5 @@
+numpy == *
+requests == *
+mtcnn == *
+scikit_learn == *
+tensorflow >= 2.2.0

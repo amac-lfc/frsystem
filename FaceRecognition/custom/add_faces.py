@@ -1,10 +1,9 @@
-
+import re
+import os
 import ntpath
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
-import re
-import os
-from FaceRecognitionSystem import FaceRecognitionSystem
+from frs import FaceRecognitionSystem
 
 DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
 EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
@@ -41,10 +40,7 @@ def addFaceToDatabase():
         
         fr.addEmbeddingsFromFile(filename, name)
 
-def addFacesUsingLoop(base=None):
-
-    if base is None:
-        raise AttributeError("Please input the directory of people")
+def addFacesUsingLoop(base):
     
     fr = FaceRecognitionSystem(160, DB, EMBEDDINGS)
     
@@ -64,6 +60,6 @@ if __name__ == "__main__":
     if action == 1:
         addFaceToDatabase() 
     elif action == 2:
-        addFacesUsingLoop(base="/Users/newuser/Projects/facialdetection/FaceRecognition/custom/jpg")  
+        addFacesUsingLoop("/Users/newuser/Projects/facialdetection/FaceRecognition/custom/jpg")  
     else:
         print("Invalid input. Try again.")
