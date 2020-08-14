@@ -13,6 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
 class FaceRecognitionSystem(object):
+    
     """
     ### Description
         Face Recognition System creates an instance of the class with the following capabilities:
@@ -28,7 +29,8 @@ class FaceRecognitionSystem(object):
         2. pickle file containing dictionary {id : listOfEmbeddings} of known faces.
         
     """
-       
+    FACE_CLASSIFIER = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/util/face_classifier.pkl"
+    
     def __init__(self, 
                  face_size, # size of the face after transformation
                  names_pkl, # path to pickle file containing dictionary of known people
@@ -343,7 +345,7 @@ class FaceRecognitionSystem(object):
        
         return embeddings_list, id_list
     
-    def faceClassifier(self):
+    def faceClassifier(self, path=None):
         """
         ### Description 
             Loads face classifier if serialized model file exists, 
@@ -352,16 +354,17 @@ class FaceRecognitionSystem(object):
         ### Returns:
             clf: sklearn model object
         """
-                
+        #if path is None:
+              
         try:
-            with open('face_classifier.pkl', 'rb') as f:
+            with open(self.FACE_CLASSIFIER, 'rb') as f:
                 clf = pickle.load(f)
         except:  
             X, y = self.getEmbeddingsList()
             X = np.array(X)
             print("Training face classifier...")
             clf = LogisticRegression().fit(X, y)  
-            with open('face_classifier.pkl', 'wb') as f:
+            with open(self.FACE_CLASSIFIER, 'wb') as f:
                 pickle.dump(clf, f)
         
         return clf
@@ -471,8 +474,8 @@ class DatabaseConnection(object):
     """
         
     def __init__(self, 
-                 db_file=None, 
-                 embeddings_file=None):
+                 db_file, 
+                 embeddings_file):
         
         self.db_file = db_file
         self.embeddings_file = embeddings_file
@@ -534,4 +537,3 @@ class DatabaseConnection(object):
             pickle.dump(self.db, f)
 
         return ref_id
-

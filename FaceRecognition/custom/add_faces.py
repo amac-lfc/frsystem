@@ -5,8 +5,12 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from frs import FaceRecognitionSystem
 
-DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
-EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
+DB = "data/db.pkl"
+EMBEDDINGS = "data/embeddings.pkl"
+
+# If using vggface model uncomment the two lines below
+# DB = "data/db_vggface.pkl"
+# EMBEDDINGS = "data/embeddings_vggface.pkl"
 
 def addFaceToDatabase():
 	
@@ -55,11 +59,11 @@ def addFacesUsingLoop(base):
             fr.addEmbeddingsFromFile(os.path.join(path, image), folder)
 
 if __name__ == "__main__":
-    action = int(input("add faces to database manually or through folder loop? type '1' or '2'"))
+    action = int(input("add faces to database manually or through folder loop? type '1' or '2': "))
 
     if action == 1:
         addFaceToDatabase() 
     elif action == 2:
-        addFacesUsingLoop("/Users/newuser/Projects/facialdetection/FaceRecognition/custom/jpg")  
+        addFacesUsingLoop("jpg/")  
     else:
         print("Invalid input. Try again.")

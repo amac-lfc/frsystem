@@ -1,20 +1,122 @@
-# Real-time COVID-19 Face Mask Recognition.
-A gentle exploration of Deep Learning in the context of Face Recognition. 
-The project is structured into three directories:
-1. **FaceRecognition/**
-   A system that simplifies face extraction, recognition, and storage.
-2. **MaskRecognition/**
-   A python notebook describing the process of training and testing a face mask detector model
-3. **MaskFaceRecognition/**
-   A program that uses functionalities of FaceRecogniton/ combined with the trained model from MaskRecognition/ to conduct mask vs name recognition.
-## FaceRecognition/
+# Face Recognition Project
 
-## MaskRecognition/
+---
 
-## Mask Recognition/
+> A gentle exploration of Deep Learning in the context of Face Recognition.
 
-## Useful Resources
-**DataCamp**
+## Table of Contents
+
+1. Getting Started
+2. Folders Description
+3. Usage Example
+4. Resources
+5. Acknowledgements
+
+## Getting Started
+
+---
+
+### Installation
+
+```markdown
+$ pip install pipenv 
+```
+
+```markdown
+$ pipenv install
+
+$ pipenv shell
+```
+
+## Folders Description
+
+---
+
+### FaceRecognition
+
+Contains a program designed as a system for experimenting with face recognition. 
+
+### MaskRecognition
+
+Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection.
+
+### MaskFaceRecognition
+
+Contains a program that uses the system from FaceRecognition folder combined with the best face mask model from MaskRecognition to detect a face mask or name of the person (if known to the system) not wearing a face mask.
+
+## Usage Example
+
+---
+
+### 1. Add Faces to database of known faces
+
+Adding known faces to the database that the system will recognize is possible through the following two methods:
+
+1. **Manual**
+    1. Camera - adding a known face through the webcam
+
+        When webcam window pops up, hit **ENTER** to take a picture of your face.
+
+        Hit **ESC** to quit.
+
+    2. File - adding a known face from a .jpg file
+2. **Folder Loop**
+
+    The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
+
+    ```markdown
+    jpg/
+    	Elon Musk/
+    		- face1.jpg # image names can be anything
+    		- face2.jpg
+    		- face3.jpg
+    		- face4.jpg
+    		- face5.jpg
+    	Barack Obama/
+    		- face1.jpg
+    	  ...
+    		- face5.jpg
+    ```
+
+**Example with folder loop**
+
+```markdown
+$ cd FaceRecognition/custom
+
+$ python3 add_faces.py
+
+$ add faces to database manually or through folder loop? type '1' or '2': 2
+
+$ Embeddings added to database.
+```
+
+### 2. Recognize known faces
+
+After running the command below, the webcam window will pop up and display frames with detected face identities. If the person in the camera was not added to the database, it will say "Unknown".
+
+```markdown
+$ python3 face_recognizer.py
+```
+
+![Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.53.39.png](Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.53.39.png)
+
+### 3. Recognize face masks or known faces
+
+Running the following command will display a webcam window with detected face masks. If a face mask is not present on the face, it will detect person's name if known, otherwise "Unknown" label will be displayed.
+
+```markdown
+$ cd MaskFaceRecognition/
+
+$ python3 mask_face_recognizer.py
+```
+
+![Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.55.38-min.png](Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.55.38-min.png)
+
+## **Resources**
+
+---
+
+### **DataCamp**
 
 [Introduction to Python for Data Sceince](https://learn.datacamp.com/courses/intro-to-python-for-data-science)
 
@@ -30,7 +132,7 @@ The project is structured into three directories:
 
 [Advanced Deep Learning with Keras](https://learn.datacamp.com/courses/advanced-deep-learning-with-keras)
 
-**Readings**
+### **Readings**
 
 [Modern Face Recognition with Deep Learning](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78)
 
@@ -38,7 +140,7 @@ The project is structured into three directories:
 
 [A Comprehensive Hands-on Guide to Transfer Learning with Real-World Applications in Deep Learning](https://towardsdatascience.com/a-comprehensive-hands-on-guide-to-transfer-learning-with-real-world-applications-in-deep-learning-212bf3b2f27a)
 
-**Tutorials**
+### **Tutorials**
 
 [Face Detection with Open CV](https://www.datacamp.com/community/tutorials/face-detection-python-opencv)
 
@@ -46,3 +148,10 @@ The project is structured into three directories:
 
 [How to Configure Image Data Augmentation in Keras](https://machinelearningmastery.com/how-to-configure-image-data-augmentation-when-training-deep-learning-neural-networks/#:~:text=The%20Keras%20deep%20learning%20neural,augmentation%20via%20the%20ImageDataGenerator%20class.&text=Image%20data%20augmentation%20is%20used,of%20the%20model%20to%20generalize.)
 
+[Face Mask Detector with OpenCV, Keras/TensorFlow, and Deep Learning](https://www.pyimagesearch.com/2020/05/04/covid-19-face-mask-detector-with-opencv-keras-tensorflow-and-deep-learning/)
+
+## Acknowledgement
+
+---
+
+This project is a part of James Rocco Research Scholarship provided by Lake Forest College and was carried out under the supervision of Prof. Arthur Bousquet PhD.

@@ -20,27 +20,28 @@ def drawDetections(db,
     
     for (x, y, w, h), name in zip(face_locations, face_names):
         
-        cv2.rectangle(frame, 
-					  (x, y), 
-					  (x+w, y+h), 
-					  BLUE if name == "Unknown" else RED, 
+        cv2.rectangle(frame,
+                      (x, y),
+                      (x+w, y+h), 
+                      BLUE if name == "Unknown" else RED, 
                       thickness=3) # draw rectangle around face
 					
 		# Draw a label with a name below the face
-        cv2.rectangle(frame, 
-					  (x, y+h), 
-					  (x+w, y+h+30), 
-					  BLUE if name == "Unknown" else RED, 
+        cv2.rectangle(frame,
+                      (x, y+h),
+                      (x+w, y+h+30),
+                      BLUE if name == "Unknown" else RED,
                       cv2.FILLED)
 
 		
         font = cv2.FONT_HERSHEY_PLAIN
-        cv2.putText(frame, 
-					db[name] if name != "Unknown" else name, 
-					(x + 6, y+h+25), 
-					font, 
-                    0.8, 
-					WHITE, 1)
+        cv2.putText(frame,
+                    db[name] if name != "Unknown" else name,
+                    (x + 6, y+h+25),
+                    font,
+                    0.8,
+                    WHITE, 
+                    1)
          
 	
     return cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
@@ -99,8 +100,11 @@ def faceRecognizer(names_dict, embeddings_dict):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    # Path to serialized dictionary of id : name pairs of known faces
-    # Path to serialized dictionary of id : faceEmbeddings of known faces
-    DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
-    EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
+    
+   
+    DB = "data/db.pkl" # Path to serialized dictionary of id : name pairs of known faces
+    EMBEDDINGS = "data/embeddings.pkl"  # Path to serialized dictionary of id : faceEmbeddings of known faces
+    # If using vggface model uncomment the two lines below
+    # DB = "data/db_vggface.pkl"
+    # EMBEDDINGS = "data/embeddings_vggface.pkl"    
     faceRecognizer(DB, EMBEDDINGS)

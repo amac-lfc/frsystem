@@ -37,10 +37,14 @@ print("""
 **********************************
 Loading Face Recognition System...""")
 
-DB = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/db.pkl"
-EMBEDDINGS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/data/embeddings.pkl"
+DB = "../FaceRecognition/custom/data/db.pkl"
+EMBEDDINGS = "../FaceRecognition/custom/data/embeddings.pkl"
 
-fr = FaceRecognitionSystem(160, 
+# If using VGGFace, uncomment the two lines below
+# DB = "../FaceRecognition/custom/data/db_vggface.pkl"
+# EMBEDDINGS = "../FaceRecognition/custom/data/embeddings_vggface.pkl"
+
+fr = FaceRecognitionSystem(160, # 224 if using VGGFace
                            DB, 
                            EMBEDDINGS)
 face_classifier = fr.faceClassifier()
