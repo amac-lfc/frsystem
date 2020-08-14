@@ -1,7 +1,5 @@
 # Face Recognition Project
 
----
-
 > A gentle exploration of Deep Learning in the context of Face Recognition.
 
 ## Table of Contents
@@ -13,8 +11,6 @@
 5. Acknowledgements
 
 ## Getting Started
-
----
 
 ### Installation
 
@@ -30,8 +26,6 @@ $ pipenv shell
 
 ## Folders Description
 
----
-
 ### FaceRecognition
 
 Contains a program designed as a system for experimenting with face recognition. 
@@ -45,8 +39,6 @@ Contains a jupyter notebook that covers experiments with transfer learning to de
 Contains a program that uses the system from FaceRecognition folder combined with the best face mask model from MaskRecognition to detect a face mask or name of the person (if known to the system) not wearing a face mask.
 
 ## Usage Example
-
----
 
 ### 1. Add Faces to database of known faces
 
@@ -98,7 +90,7 @@ After running the command below, the webcam window will pop up and display frame
 $ python3 face_recognizer.py
 ```
 
-![Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.53.39.png](Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.53.39.png)
+![Face Recognizer Example](static/img/1.png)
 
 ### 3. Recognize face masks or known faces
 
@@ -110,11 +102,9 @@ $ cd MaskFaceRecognition/
 $ python3 mask_face_recognizer.py
 ```
 
-![Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.55.38-min.png](Face%20Recognition%20Project%207d2bdb91f8b244e28f9e34cd2bf57cc7/Screen_Shot_2020-08-13_at_21.55.38-min.png)
+![Mask Face Recognizer Example](static/img/2.png)
 
 ## **Resources**
-
----
 
 ### **DataCamp**
 
@@ -150,8 +140,6 @@ $ python3 mask_face_recognizer.py
 
 [Face Mask Detector with OpenCV, Keras/TensorFlow, and Deep Learning](https://www.pyimagesearch.com/2020/05/04/covid-19-face-mask-detector-with-opencv-keras-tensorflow-and-deep-learning/)
 
-## Acknowledgement
-
----
+## Acknowledgements
 
 This project is a part of James Rocco Research Scholarship provided by Lake Forest College and was carried out under the supervision of Prof. Arthur Bousquet PhD.
