@@ -32,9 +32,8 @@ class FaceRecognitionSystem(object):
     FACE_CLASSIFIER = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/util/face_classifier.pkl"
     
     def __init__(self, 
-                 face_size, # size of the face after transformation
-                 names_pkl, # path to pickle file containing dictionary of known people
-                 embeddings_pkl): # path to pickle file containing dictionary of known face embeddings
+                 face_size=None, # size of the face after transformation 
+                 **kwargs): 
         """
         ### Description
             1. Initializes MTCNN Face detection model.
@@ -52,11 +51,16 @@ class FaceRecognitionSystem(object):
         """
 
         self.detector = MTCNN()
-        self.predictor = embeddingsPredictor()
-        self.connection = DatabaseConnection(db_file=names_pkl, embeddings_file=embeddings_pkl)
-        self.db = self.connection.db
-        self.embeddings = self.connection.embeddings
-        self.face_size = face_size
+        
+        if face_size is not None:
+            self.predictor = embeddingsPredictor()
+            self.face_size = face_size
+        
+        if "db_file" in kwargs:
+            self.connection = DatabaseConnection(**kwargs)
+            self.db = self.connection.db
+            self.embeddings = self.connection.embeddings
+        
     
     def alignCropFace(self, 
                       image, 
@@ -345,7 +349,7 @@ class FaceRecognitionSystem(object):
        
         return embeddings_list, id_list
     
-    def faceClassifier(self, path=None):
+    def faceClassifier(self):
         """
         ### Description 
             Loads face classifier if serialized model file exists, 
@@ -354,8 +358,7 @@ class FaceRecognitionSystem(object):
         ### Returns:
             clf: sklearn model object
         """
-        #if path is None:
-              
+             
         try:
             with open(self.FACE_CLASSIFIER, 'rb') as f:
                 clf = pickle.load(f)
@@ -474,8 +477,8 @@ class DatabaseConnection(object):
     """
         
     def __init__(self, 
-                 db_file, 
-                 embeddings_file):
+                 db_file=None, 
+                 embeddings_file=None):
         
         self.db_file = db_file
         self.embeddings_file = embeddings_file

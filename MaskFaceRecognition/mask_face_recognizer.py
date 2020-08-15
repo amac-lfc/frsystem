@@ -45,8 +45,8 @@ EMBEDDINGS = "../FaceRecognition/custom/data/embeddings.pkl"
 # EMBEDDINGS = "../FaceRecognition/custom/data/embeddings_vggface.pkl"
 
 fr = FaceRecognitionSystem(160, # 224 if using VGGFace
-                           DB, 
-                           EMBEDDINGS)
+                           db_file=DB, 
+                           embeddings_file=EMBEDDINGS)
 face_classifier = fr.faceClassifier()
 
 print("Loading Face Mask classifier...")

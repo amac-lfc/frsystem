@@ -14,7 +14,7 @@ EMBEDDINGS = "data/embeddings.pkl"
 
 def addFaceToDatabase():
 	
-    fr = FaceRecognitionSystem(160, DB, EMBEDDINGS) 
+    fr = FaceRecognitionSystem(160, db_file=DB, embeddings_file=EMBEDDINGS) 
 
     method = input("Which method would you like to use? Type \"camera\" or \"file\"\n")
 
@@ -46,7 +46,7 @@ def addFaceToDatabase():
 
 def addFacesUsingLoop(base):
     
-    fr = FaceRecognitionSystem(160, DB, EMBEDDINGS)
+    fr = FaceRecognitionSystem(160, db_file=DB, embeddings_file=EMBEDDINGS)
     
     for folder in os.listdir(base):
         if folder[0] == ".":

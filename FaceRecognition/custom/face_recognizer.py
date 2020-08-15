@@ -48,7 +48,7 @@ def drawDetections(db,
 							
 def faceRecognizer(names_dict, embeddings_dict):
 
-    fr = FaceRecognitionSystem(160, names_dict, embeddings_dict)
+    fr = FaceRecognitionSystem(160, db_file=names_dict, embeddings_file=embeddings_dict)
 
     known_face_embeddings, known_face_names = fr.getEmbeddingsList()
     webcam = cv2.VideoCapture(0)
