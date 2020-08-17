@@ -98,8 +98,10 @@ Running the following command will display a webcam window with detected face ma
 ```markdown
 $ cd MaskRecognition/
 
-$ python3 mask_face_recognizer.py
+$ python3 mask_recognizer.py
 ```
+
+![Face Recognizer Example](static/img/2.png)
 
 ### 4. Recognize face masks or known faces
 
@@ -108,10 +110,10 @@ Running the following command will display a webcam window with detected face ma
 ```markdown
 $ cd MaskFaceRecognition/
 
-$ python3 mask_recognizer.py
+$ python3 mask_face_recognizer.py
 ```
 
-![Mask Face Recognizer Example](static/img/2.png)
+![Mask Face Recognizer Example](static/img/3.png)
 
 ## **Resources**
 
