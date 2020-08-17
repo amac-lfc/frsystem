@@ -32,7 +32,7 @@ Contains a program designed as a system for experimenting with face recognition.
 
 ### MaskRecognition
 
-Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection.
+Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection, and a program that uses the system from FaceRecognition folder to classify a face mask in real time.
 
 ### MaskFaceRecognition
 
@@ -58,16 +58,16 @@ Adding known faces to the database that the system will recognize is possible th
 
     ```markdown
     jpg/
-    	Elon Musk/
-    		- face1.jpg # image names can be anything
-    		- face2.jpg
-    		- face3.jpg
-    		- face4.jpg
-    		- face5.jpg
-    	Barack Obama/
-    		- face1.jpg
-    	  ...
-    		- face5.jpg
+       Elon Musk/
+          - face1.jpg # image names can be anything
+          - face2.jpg
+          - face3.jpg
+          - face4.jpg
+          - face5.jpg
+       Johnny Ive/
+          - face1.jpg
+		...
+          - face5.jpg
     ```
 
 **Example with folder loop**
@@ -92,14 +92,23 @@ $ python3 face_recognizer.py
 
 ![Face Recognizer Example](static/img/1.png)
 
-### 3. Recognize face masks or known faces
+### 3. Recognize face masks
+Running the following command will display a webcam window with detected face masks ("Mask"/"No Mask").
+
+```markdown
+$ cd MaskRecognition/
+
+$ python3 mask_face_recognizer.py
+```
+
+### 4. Recognize face masks or known faces
 
 Running the following command will display a webcam window with detected face masks. If a face mask is not present on the face, it will detect person's name if known, otherwise "Unknown" label will be displayed.
 
 ```markdown
 $ cd MaskFaceRecognition/
 
-$ python3 mask_face_recognizer.py
+$ python3 mask_recognizer.py
 ```
 
 ![Mask Face Recognizer Example](static/img/2.png)

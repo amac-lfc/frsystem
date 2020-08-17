@@ -12,10 +12,10 @@ def drawDetections(db,
                    frame, 
                    face_locations, 
                    face_names):
-    
-    RED = (235, 69, 17)
-    GREEN = (124, 234, 156)
-    BLUE = (88, 99, 248)
+    # BGR format
+    RED = (17, 69, 235)
+    GREEN = (156, 234, 124)
+    BLUE = (248, 99, 88)
     WHITE = (255, 255, 255)
     
     for (x, y, w, h), name in zip(face_locations, face_names):
@@ -23,14 +23,14 @@ def drawDetections(db,
         cv2.rectangle(frame,
                       (x, y),
                       (x+w, y+h), 
-                      BLUE if name == "Unknown" else RED, 
+                      BLUE if name != "Unknown" else RED, 
                       thickness=3) # draw rectangle around face
 					
 		# Draw a label with a name below the face
         cv2.rectangle(frame,
                       (x, y+h),
                       (x+w, y+h+30),
-                      BLUE if name == "Unknown" else RED,
+                      BLUE if name != "Unknown" else RED,
                       cv2.FILLED)
 
 		
@@ -69,7 +69,7 @@ def faceRecognizer(names_dict, embeddings_dict):
                                             face_locations=face_locations, 
                                             facial_features=facial_features)
 
-        if face_embeddings:
+        if face_embeddings.size != 0:
             
             face_names = []
             for face_embedding in face_embeddings:
@@ -92,7 +92,7 @@ def faceRecognizer(names_dict, embeddings_dict):
                                          face_locations, 
                                          face_names)
 
-        cv2.imshow("Face Recognizer", processed_frame)
+        cv2.imshow("Face Recognizer", processed_frame[:,:,::-1])
         if cv2.waitKey(1) & 0xFF == 27:
             break
 

@@ -39,7 +39,7 @@ class FaceRecognitionSystem(object):
             1. Initializes MTCNN Face detection model.
             2. Initializes FaceNet or VGGFace model to extract embeddings from face images.
             3. Connects to Database through DatabaseConnection class.
-            4. assigns to instance variable a dictionary {id : name} of  known faces from the database.
+            4. assigns to instance variable a dictionary {id : name} of known faces from the database.
             5. assigns to instance variable a dictionary {id : listOfEmbeddings} of known faces from the database.
             6. assingns to instance variable the desired face size required for the embeddings model.
 
