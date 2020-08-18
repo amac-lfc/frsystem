@@ -1,11 +1,5 @@
 include *.lock
-include *.py
 include *.txt
 include LISCENCE
 include Pipfile
-recursive-include MaskFaceRecognition *.ipynb
-recursive-include MaskFaceRecognition *.py
-recursive-include data *.pkl
-recursive-include static *.png
-recursive-include util *.h5
-recursive-include util *.pkl
+
