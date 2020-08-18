@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(1, '/Users/newuser/Projects/facialdetection/frsystem')
+
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
@@ -6,7 +9,8 @@ environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
 import cv2
 from  numpy import argmin
-from frs import FaceRecognitionSystem
+from frsystem.frs import FaceRecognitionSystem
+from frsystem.helper import getEmbeddingsList
 
 def drawDetections(db,
                    frame, 
@@ -44,13 +48,13 @@ def drawDetections(db,
                     1)
          
 	
-    return cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    return frame
 							
 def faceRecognizer(names_dict, embeddings_dict):
 
     fr = FaceRecognitionSystem(160, db_file=names_dict, embeddings_file=embeddings_dict)
 
-    known_face_embeddings, known_face_names = fr.getEmbeddingsList()
+    known_face_embeddings, known_face_names = getEmbeddingsList(fr.embeddings)
     webcam = cv2.VideoCapture(0)
 
     while webcam.isOpened():
@@ -92,7 +96,7 @@ def faceRecognizer(names_dict, embeddings_dict):
                                          face_locations, 
                                          face_names)
 
-        cv2.imshow("Face Recognizer", processed_frame[:,:,::-1])
+        cv2.imshow("Face Recognizer", processed_frame)
         if cv2.waitKey(1) & 0xFF == 27:
             break
 
@@ -102,8 +106,8 @@ def faceRecognizer(names_dict, embeddings_dict):
 if __name__ == "__main__":
     
    
-    DB = "data/db.pkl" # Path to serialized dictionary of id : name pairs of known faces
-    EMBEDDINGS = "data/embeddings.pkl"  # Path to serialized dictionary of id : faceEmbeddings of known faces
+    DB = "../FaceRecognitionSystem/data/db.pkl" # Path to serialized dictionary of id : name pairs of known faces
+    EMBEDDINGS = "../FaceRecognitionSystem/data/embeddings.pkl"  # Path to serialized dictionary of id : faceEmbeddings of known faces
     # If using vggface model uncomment the two lines below
     # DB = "data/db_vggface.pkl"
     # EMBEDDINGS = "data/embeddings_vggface.pkl"    

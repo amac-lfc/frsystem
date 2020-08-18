@@ -3,12 +3,11 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 from os import environ
 environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
-
 import cv2 
 import pickle 
 import numpy as np
+from .models import *
 from mtcnn import MTCNN
-from models import embeddingsPredictor
 from sklearn.linear_model import LogisticRegression
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
@@ -29,8 +28,6 @@ class FaceRecognitionSystem(object):
         2. pickle file containing dictionary {id : listOfEmbeddings} of known faces.
         
     """
-    FACE_CLASSIFIER = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/util/face_classifier.pkl"
-    
     def __init__(self, 
                  face_size=None, # size of the face after transformation 
                  **kwargs): 
@@ -49,17 +46,22 @@ class FaceRecognitionSystem(object):
             'embeddings_pkl' (str):  path to pickle file containing dictionary {id : listOfEmbeddings} of known faces.
             
         """
-
+        print("""
+**********************************
+Loading Face Recognition System...""")
+        
         self.detector = MTCNN()
         
         if face_size is not None:
-            self.predictor = embeddingsPredictor()
+            self.predictor = embeddingsPredictor(which="facenet", path="util/facenet_keras.h5")
             self.face_size = face_size
+            
         
         if "db_file" in kwargs:
             self.connection = DatabaseConnection(**kwargs)
             self.db = self.connection.db
             self.embeddings = self.connection.embeddings
+            self.face_classifier = faceClassifier(embeddings_dict=self.embeddings, path="util/face_classifier.pkl")
         
     
     def alignCropFace(self, 
@@ -308,70 +310,26 @@ class FaceRecognitionSystem(object):
             return list(FaceRecognitionSystem.faceDistance(face_embedding_to_check, known_face_embeddings) <= threshold)
         else:
             return list(distances <= threshold)
+     
+    def identifyPerson(self,
+                       face, 
+                       box, 
+                       facial_features):
+   
+        embedding = self.faceEmbeddings(face, 
+                                        face_locations=box, 
+                                        facial_features=facial_features)[0]
     
-    def getEmbeddingsList(self):
-        """
-        ### Decription: 
-            Given dictionary of embeddings return two lists 
-            one containing ids of known people and the other containing face embeddings
-            
-        ```python
-            dict = {
-                1 : [ [embedding1], [embedding2], [embeddingN] ]
-                2 : [ [embedding1], [embedding2], [embeddingN] ]
-                3 : [ [embedding1], [embedding2], [embeddingN] ]
-            }
-            
-            returns 
-            embeddings_list = [ [embedding1], [embedding2], [embedding3], [embeddingN] ]
-            id_list = [1, 1, 1, 1, 1, 2, 2, 2, ...]
-        ```   
-        ### Args
-            embeddings (dict, optional): dictionary where keys are ids of known people and values are their embeddings. Defaults to None.
-
-        ### Returns:  
-            two lists with all ids and embeddings.
-        """
-        embeddings = self.embeddings 
-        
-        embeddings_list = []  # known face embeddings
-        id_list = []	   # unique ids of known face embeddings
-
-
-        for ref_id , embed_list in embeddings.items():
-            if len(embed_list) > 1:
-                for e in embed_list:
-                    embeddings_list.append(e)
-                    id_list.append(ref_id)
-            else:
-                embeddings_list.append(embed_list[0])
-                id_list.append(ref_id)
-       
-        return embeddings_list, id_list
+        prediction = self.face_classifier.predict_proba(embedding.reshape(1,-1))
+        probability = prediction.max()
     
-    def faceClassifier(self):
-        """
-        ### Description 
-            Loads face classifier if serialized model file exists, 
-            else trains a face classifier and returns it.
-
-        ### Returns:
-            clf: sklearn model object
-        """
-             
-        try:
-            with open(self.FACE_CLASSIFIER, 'rb') as f:
-                clf = pickle.load(f)
-        except:  
-            X, y = self.getEmbeddingsList()
-            X = np.array(X)
-            print("Training face classifier...")
-            clf = LogisticRegression().fit(X, y)  
-            with open(self.FACE_CLASSIFIER, 'wb') as f:
-                pickle.dump(clf, f)
-        
-        return clf
-        
+        if probability >= 0.5:
+            name = str(self.db[np.argmax(prediction) + 1]) + " {:.2f}%".format(probability * 100)
+        else:
+            name = "Unknown"
+    
+        return name    
+    
     def addEmbeddingsFromFile(self, filename, name):
         """
         ### Description

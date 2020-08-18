@@ -3,18 +3,11 @@ import os
 import ntpath
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
-from frs import FaceRecognitionSystem
+from frsystem.frs import FaceRecognitionSystem
 
-DB = "data/db.pkl"
-EMBEDDINGS = "data/embeddings.pkl"
-
-# If using vggface model uncomment the two lines below
-# DB = "data/db_vggface.pkl"
-# EMBEDDINGS = "data/embeddings_vggface.pkl"
-
-def addFaceToDatabase():
+def addFaceToDatabase(db_file, embeddings_file):
 	
-    fr = FaceRecognitionSystem(160, db_file=DB, embeddings_file=EMBEDDINGS) 
+    fr = FaceRecognitionSystem(160, db_file=db_file, embeddings_file=embeddings_file) 
 
     method = input("Which method would you like to use? Type \"camera\" or \"file\"\n")
 
@@ -44,9 +37,9 @@ def addFaceToDatabase():
         
         fr.addEmbeddingsFromFile(filename, name)
 
-def addFacesUsingLoop(base):
+def addFacesUsingLoop(base, db_file, embeddings_file):
     
-    fr = FaceRecognitionSystem(160, db_file=DB, embeddings_file=EMBEDDINGS)
+    fr = FaceRecognitionSystem(160, db_file=db_file, embeddings_file=embeddings_file)
     
     for folder in os.listdir(base):
         if folder[0] == ".":
@@ -59,11 +52,17 @@ def addFacesUsingLoop(base):
             fr.addEmbeddingsFromFile(os.path.join(path, image), folder)
 
 if __name__ == "__main__":
+    DB = "frsystem/data/db.pkl"
+    EMBEDDINGS = "frsystem/data/embeddings.pkl"
+
+    # If using vggface model uncomment the two lines below
+    # DB = "data/db_vggface.pkl"
+    # EMBEDDINGS = "data/embeddings_vggface.pkl"
     action = int(input("add faces to database manually or through folder loop? type '1' or '2': "))
 
     if action == 1:
-        addFaceToDatabase() 
+        addFaceToDatabase(DB, EMBEDDINGS) 
     elif action == 2:
-        addFacesUsingLoop("jpg/")  
+        addFacesUsingLoop("frsystem/jpg", DB, EMBEDDINGS)  
     else:
         print("Invalid input. Try again.")

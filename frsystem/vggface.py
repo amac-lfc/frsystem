@@ -4,7 +4,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flatten, Dense, Dropout, Activation
 
-PATH_TO_WEIGHTS = "/Users/newuser/Projects/facialdetection/FaceRecognition/custom/util/vgg_face_weights.h5"
+PATH_TO_WEIGHTS = "/Users/newuser/Projects/facialdetection/FaceRecognitionSystem/util/vgg_face_weights.h5"
 
 def VGGFace(WEIGHTS_FOLDER=PATH_TO_WEIGHTS):
   """

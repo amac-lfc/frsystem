@@ -26,15 +26,12 @@ $ pipenv shell
 
 ## Folders Description
 
-### FaceRecognition
+### frsystem
 
 Contains a program designed as a system for experimenting with face recognition. 
 
-### MaskRecognition
-
-Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection, and a program that uses the system from FaceRecognition folder to classify a face mask in real time.
-
 ### MaskFaceRecognition
+Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection, and a program that uses the system from FaceRecognition folder to classify a face mask in real time.
 
 Contains a program that uses the system from FaceRecognition folder combined with the best face mask model from MaskRecognition to detect a face mask or name of the person (if known to the system) not wearing a face mask.
 
@@ -73,8 +70,6 @@ Adding known faces to the database that the system will recognize is possible th
 **Example with folder loop**
 
 ```markdown
-$ cd FaceRecognition/custom
-
 $ python3 add_faces.py
 
 $ add faces to database manually or through folder loop? type '1' or '2': 2
@@ -87,7 +82,7 @@ $ Embeddings added to database.
 After running the command below, the webcam window will pop up and display frames with detected face identities. If the person in the camera was not added to the database, it will say "Unknown".
 
 ```markdown
-$ python3 face_recognizer.py
+$ python3 MaskFaceRecognition/face_recognizer.py
 ```
 
 ![Face Recognizer Example](static/img/1.png)
@@ -96,9 +91,7 @@ $ python3 face_recognizer.py
 Running the following command will display a webcam window with detected face masks ("Mask"/"No Mask").
 
 ```markdown
-$ cd MaskRecognition/
-
-$ python3 mask_recognizer.py
+$ python3 MaskFaceRecognition/mask_recognizer.py
 ```
 
 ![Face Recognizer Example](static/img/2.png)
@@ -108,9 +101,7 @@ $ python3 mask_recognizer.py
 Running the following command will display a webcam window with detected face masks. If a face mask is not present on the face, it will detect person's name if known, otherwise "Unknown" label will be displayed.
 
 ```markdown
-$ cd MaskFaceRecognition/
-
-$ python3 mask_face_recognizer.py
+$ python3 MaskFaceRecognition/mask_face_recognizer.py
 ```
 
 ![Mask Face Recognizer Example](static/img/3.png)

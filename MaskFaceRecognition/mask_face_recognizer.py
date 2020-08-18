@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(1, '/Users/newuser/Projects/facialdetection/FaceRecognition/custom')
+sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
 
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -7,38 +7,15 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 import os 
 os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
-import time
 import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.applications.xception import preprocess_input
-from frs import FaceRecognitionSystem
+from frsystem.frs import FaceRecognitionSystem
 
-def identifyPerson(face, 
-                   box, 
-                   facial_features):
-   
-    embedding = fr.faceEmbeddings(face, 
-                                  face_locations=box, 
-                                  facial_features=facial_features)[0]
-    
-    prediction = face_classifier.predict_proba(embedding.reshape(1,-1))
-    probability = prediction.max()
-    
-    if probability >= 0.5:
-        name = str(fr.db[np.argmax(prediction) + 1]) + " {:.2f}%".format(probability * 100)
-    else:
-        name = "Unknown"
-    
-    return name
-
-print("""
-**********************************
-Loading Face Recognition System...""")
-
-DB = "../FaceRecognition/custom/data/db.pkl"
-EMBEDDINGS = "../FaceRecognition/custom/data/embeddings.pkl"
+DB = "../FaceRecognitionSystem/data/db.pkl"
+EMBEDDINGS = "../FaceRecognitionSystem/data/embeddings.pkl"
 
 # If using VGGFace, uncomment the two lines below
 # DB = "../FaceRecognition/custom/data/db_vggface.pkl"
@@ -47,9 +24,6 @@ EMBEDDINGS = "../FaceRecognition/custom/data/embeddings.pkl"
 fr = FaceRecognitionSystem(160, # 224 if using VGGFace
                            db_file=DB, 
                            embeddings_file=EMBEDDINGS)
-face_classifier = fr.faceClassifier()
-
-print("Loading Face Mask classifier...")
 
 #load my mask recognition model
 mask_classifier = load_model("models/xception")
@@ -69,7 +43,7 @@ while webcam.isOpened():
                 
             (startX, startY, width, height) = box
             endX = startX + width
-            endY = startY + width
+            endY = startY + height
             # ensure the bounding boxes fall within the dimensions of the frame
             (startX, startY) = (max(0, startX), max(0, startY))
             (endX, endY) = (min(img.shape[1] - 1, endX), min(img.shape[0] - 1, endY))
@@ -80,14 +54,13 @@ while webcam.isOpened():
             face = preprocess_input(face)
             face = np.expand_dims(face, axis=0)
 
-            (mask, withoutMask) = mask_classifier.predict(face)[0]
+            (mask, no_mask) = mask_classifier.predict(face)[0]
                 
-            if mask > withoutMask:
+            if mask > no_mask:
                 label = "Mask: {:.2f}%".format(mask * 100)
                 color = (0, 180, 0) 
             else:
-                #label = "No Mask: {:.2f}%".format(withoutMask * 100)
-                label = identifyPerson(img, 
+                label = fr.identifyPerson(img, 
                                        [(startX, startY, endX, endY)], 
                                        [feature])
                 color = (0, 60, 255) 
@@ -97,13 +70,13 @@ while webcam.isOpened():
             x, y, wid, hei = startX, startY, endX, endY
                 
             # ******** TOP **********
-            cv2.rectangle(img, 
+            cv2.rectangle(frame, 
                           (x, y - 20), # upper left
                           (wid, y), # bottom right
                           color, 
                           -1) # -1 argument makes a filled rectangle
             # ******** TEXT **********
-            cv2.putText(img, 
+            cv2.putText(frame, 
                         label, # text to draw
                         (startX+2, startY - 10), # text start coordinates
                         cv2.FONT_HERSHEY_PLAIN, # font
@@ -111,7 +84,7 @@ while webcam.isOpened():
                         (255,255,255), # color
                         1) # thickness
             # ******** FACE FRAME *********
-            cv2.rectangle(img, 
+            cv2.rectangle(frame, 
                           (startX, startY), 
                           (endX, endY), 
                           color, 
@@ -120,7 +93,7 @@ while webcam.isOpened():
     else:
         continue
 
-    cv2.imshow("COVID-19 Mask Classifier App",img[:,:,::-1])
+    cv2.imshow("COVID-19 Mask Classifier App", frame)
 
     if cv2.waitKey(1) & 0xFF == 27:
         break
