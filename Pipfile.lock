@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d2ca9be8b4321a25dc39159ec2a856b4da91f203e929188851e3bdd9c441214d"
+            "sha256": "26eac9f72b5b90e2f5a29036dcac8e8e474d7a1bd45921a8583975e023c38417"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -49,6 +49,10 @@
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
+        },
+        "frsystem": {
+            "editable": true,
+            "path": "."
         },
         "gast": {
             "hashes": [
