@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
+# import sys
+# sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
 
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
