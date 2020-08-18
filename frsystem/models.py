@@ -5,18 +5,21 @@ from tensorflow.keras import Model
 from tensorflow.keras.layers import Flatten, Input
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-import os
-def embeddingsPredictor(which="facenet", path=None): 
+
+
+def embeddingsPredictor(which=None, path=None): 
     
     if which is "vggface":
-        model = VGGFace()
+        face_size = 224
+        model = VGGFace(path)
         model = Model(model.layers[0].input, model.layers[-2].output)
     elif which is "facenet":
+        face_size = 160
         model = load_model(path)
     else:
         raise AttributeError("invalid attribute. Please use 'vggface' or 'facenet'.")    
     
-    return model
+    return model, face_size
 
 def faceClassifier(embeddings_dict=None, path=None):
         

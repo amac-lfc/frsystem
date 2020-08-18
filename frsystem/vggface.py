@@ -4,9 +4,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input, Convolution2D, ZeroPadding2D, MaxPooling2D, Flatten, Dense, Dropout, Activation
 
-PATH_TO_WEIGHTS = "/Users/newuser/Projects/facialdetection/FaceRecognitionSystem/util/vgg_face_weights.h5"
-
-def VGGFace(WEIGHTS_FOLDER=PATH_TO_WEIGHTS):
+def VGGFace(weights_path=None):
   """
   creates VGGFace model and loads weights for it
     
@@ -70,8 +68,8 @@ def VGGFace(WEIGHTS_FOLDER=PATH_TO_WEIGHTS):
   model.add(Activation('softmax'))
 
   # Loading weights 
-  if os.path.isfile(WEIGHTS_FOLDER):
-    model.load_weights(WEIGHTS_FOLDER)
+  if os.path.isfile(weights_path):
+    model.load_weights(weights_path)
   else:
     url = "https://drive.google.com/file/d/1CPSeum3HpopfomUEK1gybeuIVoeJT_Eo/view"
     r = requests.get(url, allow_redirects=True)

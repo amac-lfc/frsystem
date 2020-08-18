@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(1, '/Users/newuser/Projects/facialdetection/frsystem')
+sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
 
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -50,9 +50,7 @@ def drawDetections(db,
 	
     return frame
 							
-def faceRecognizer(names_dict, embeddings_dict):
-
-    fr = FaceRecognitionSystem(160, db_file=names_dict, embeddings_file=embeddings_dict)
+def faceRecognizer(fr):
 
     known_face_embeddings, known_face_names = getEmbeddingsList(fr.embeddings)
     webcam = cv2.VideoCapture(0)
@@ -105,10 +103,19 @@ def faceRecognizer(names_dict, embeddings_dict):
 
 if __name__ == "__main__":
     
-   
-    DB = "../FaceRecognitionSystem/data/db.pkl" # Path to serialized dictionary of id : name pairs of known faces
-    EMBEDDINGS = "../FaceRecognitionSystem/data/embeddings.pkl"  # Path to serialized dictionary of id : faceEmbeddings of known faces
+    EMBEDDING_MODEL = "facenet"
+    WEIGHTS = "../util/facenet_keras.h5"
+    FACE_CLASSIFIER = "../util/face_classifier.pkl"
+    DB = "../data/db.pkl"
+    EMBEDDINGS = "../data/embeddings.pkl"
     # If using vggface model uncomment the two lines below
     # DB = "data/db_vggface.pkl"
-    # EMBEDDINGS = "data/embeddings_vggface.pkl"    
-    faceRecognizer(DB, EMBEDDINGS)
+    # EMBEDDINGS = "data/embeddings_vggface.pkl"
+    
+    fr = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+                               weights=WEIGHTS,
+                               face_classifier=FACE_CLASSIFIER,
+                               db_file=DB, 
+                               embeddings_file=EMBEDDINGS)
+      
+    faceRecognizer(fr)

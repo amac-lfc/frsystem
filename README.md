@@ -6,7 +6,7 @@
 
 1. Getting Started
 2. Folders Description
-3. Usage Example
+3. Usage
 4. Resources
 5. Acknowledgements
 

@@ -5,10 +5,8 @@ from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from frsystem.frs import FaceRecognitionSystem
 
-def addFaceToDatabase(db_file, embeddings_file):
+def addFaceToDatabase(fr, db_file, embeddings_file):
 	
-    fr = FaceRecognitionSystem(160, db_file=db_file, embeddings_file=embeddings_file) 
-
     method = input("Which method would you like to use? Type \"camera\" or \"file\"\n")
 
     while method not in ("camera", "file"):
@@ -37,9 +35,7 @@ def addFaceToDatabase(db_file, embeddings_file):
         
         fr.addEmbeddingsFromFile(filename, name)
 
-def addFacesUsingLoop(base, db_file, embeddings_file):
-    
-    fr = FaceRecognitionSystem(160, db_file=db_file, embeddings_file=embeddings_file)
+def addFacesUsingLoop(fr, base, db_file, embeddings_file):
     
     for folder in os.listdir(base):
         if folder[0] == ".":
@@ -52,17 +48,25 @@ def addFacesUsingLoop(base, db_file, embeddings_file):
             fr.addEmbeddingsFromFile(os.path.join(path, image), folder)
 
 if __name__ == "__main__":
-    DB = "frsystem/data/db.pkl"
-    EMBEDDINGS = "frsystem/data/embeddings.pkl"
-
+    EMBEDDING_MODEL = "facenet"
+    WEIGHTS = "util/facenet_keras.h5"
+    DB = "data/db.pkl"
+    EMBEDDINGS = "data/embeddings.pkl"
     # If using vggface model uncomment the two lines below
     # DB = "data/db_vggface.pkl"
     # EMBEDDINGS = "data/embeddings_vggface.pkl"
+    
+    fr = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+                               weights=WEIGHTS,
+                               db_file=DB, 
+                               embeddings_file=EMBEDDINGS) 
+    
     action = int(input("add faces to database manually or through folder loop? type '1' or '2': "))
 
     if action == 1:
-        addFaceToDatabase(DB, EMBEDDINGS) 
+        addFaceToDatabase(fr, DB, EMBEDDINGS) 
     elif action == 2:
-        addFacesUsingLoop("frsystem/jpg", DB, EMBEDDINGS)  
+        FACES_FOLDER = "jpg/"
+        addFacesUsingLoop(fr, FACES_FOLDER, DB, EMBEDDINGS)  
     else:
         print("Invalid input. Try again.")

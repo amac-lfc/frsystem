@@ -28,8 +28,10 @@ class FaceRecognitionSystem(object):
         2. pickle file containing dictionary {id : listOfEmbeddings} of known faces.
         
     """
-    def __init__(self, 
-                 face_size=None, # size of the face after transformation 
+    def __init__(self,
+                 embedding_model=None,
+                 weights=None,
+                 face_classifier=None, 
                  **kwargs): 
         """
         ### Description
@@ -52,16 +54,16 @@ Loading Face Recognition System...""")
         
         self.detector = MTCNN()
         
-        if face_size is not None:
-            self.predictor = embeddingsPredictor(which="facenet", path="util/facenet_keras.h5")
-            self.face_size = face_size
-            
+        if embedding_model is not None:
+            self.predictor, self.face_size = embeddingsPredictor(which=embedding_model, path=weights)
         
         if "db_file" in kwargs:
             self.connection = DatabaseConnection(**kwargs)
             self.db = self.connection.db
             self.embeddings = self.connection.embeddings
-            self.face_classifier = faceClassifier(embeddings_dict=self.embeddings, path="util/face_classifier.pkl")
+            
+            if face_classifier is not None:
+                self.face_classifier = faceClassifier(embeddings_dict=self.embeddings, path=face_classifier)
         
     
     def alignCropFace(self, 
