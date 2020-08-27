@@ -14,7 +14,7 @@
 
 ### Installation
 
-If you don't have **pipenv** virtualenv manager for your projects, use the command below to install
+If you don't have **pipenv** virtualenv manager for your projects, use the command below to install.
 ```markdown
 $ pip install pipenv 
 ```
@@ -48,13 +48,12 @@ Contains a package designed as a system for experimenting with face recognition.
 Adding known faces to the database that the system will recognize is possible through the following two methods:
 
  **Manual**
-1. Camera - adding a known face through the webcam. When webcam window pops up, hit **ENTER** to take a picture of your face. Hit **ESC** to quit.
+1. Webcam - adding a known face through the webcam. When webcam window pops up, hit **ENTER** to take a picture of your face. Hit **ESC** to quit.
 
 2. File - adding a known face from a .jpg file
    
 **Folder Loop**
-
-    The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
+The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
 
     ```markdown
     jpg/
@@ -69,6 +68,7 @@ Adding known faces to the database that the system will recognize is possible th
 		...
           - face5.jpg
     ```
+**Example with manual**
 
 **Example with folder loop**
 
@@ -80,38 +80,38 @@ $ add faces to database manually or through folder loop? type '1' or '2': 2
 $ Embeddings added to database.
 ```
 
-### 2. Recognize known faces
+#### Step 2: Recognize known faces
 
 After running the command below, the webcam window will pop up and display frames with detected face identities. If the person in the camera was not added to the database, it will say "Unknown".
 
 ```markdown
-$ python3 MaskFaceRecognition/face_recognizer.py
+$ python3 frsapp/face_recognizer.py
 ```
 
 ![Face Recognizer Example](static/img/1.png)
 
-### 3. Recognize face masks
+#### Step 3: Recognize face masks
 Running the following command will display a webcam window with detected face masks ("Mask"/"No Mask").
 
 ```markdown
-$ python3 MaskFaceRecognition/mask_recognizer.py
+$ python3 frsapp/mask_recognizer.py
 ```
 
 ![Face Recognizer Example](static/img/2.png)
 
-### 4. Recognize face masks or known faces
+#### Step 4: Recognize face masks or known faces
 
 Running the following command will display a webcam window with detected face masks. If a face mask is not present on the face, it will detect person's name if known, otherwise "Unknown" label will be displayed.
 
 ```markdown
-$ python3 MaskFaceRecognition/mask_face_recognizer.py
+$ python3 frsapp/mask_face_recognizer.py
 ```
 
 ![Mask Face Recognizer Example](static/img/3.png)
 
 ## **Resources**
 
-### **DataCamp**
+#### **DataCamp**
 
 [Introduction to Python for Data Sceince](https://learn.datacamp.com/courses/intro-to-python-for-data-science)
 
@@ -127,7 +127,7 @@ $ python3 MaskFaceRecognition/mask_face_recognizer.py
 
 [Advanced Deep Learning with Keras](https://learn.datacamp.com/courses/advanced-deep-learning-with-keras)
 
-### **Readings**
+#### **Readings**
 
 [Modern Face Recognition with Deep Learning](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78)
 
@@ -135,7 +135,7 @@ $ python3 MaskFaceRecognition/mask_face_recognizer.py
 
 [A Comprehensive Hands-on Guide to Transfer Learning with Real-World Applications in Deep Learning](https://towardsdatascience.com/a-comprehensive-hands-on-guide-to-transfer-learning-with-real-world-applications-in-deep-learning-212bf3b2f27a)
 
-### **Tutorials**
+#### **Tutorials**
 
 [Face Detection with Open CV](https://www.datacamp.com/community/tutorials/face-detection-python-opencv)
 
