@@ -1,10 +1,13 @@
 import pickle
+import numpy as np
 from .vggface import VGGFace
 from .helper import getEmbeddingsList
 from tensorflow.keras import Model
 from tensorflow.keras.layers import Flatten, Input
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
+from sklearn.linear_model import LogisticRegression
+
 
 
 def embeddingsPredictor(which=None, path=None): 
