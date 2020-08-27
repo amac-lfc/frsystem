@@ -42,7 +42,7 @@ Contains a package designed as a system for experimenting with face recognition.
 
 ## Usage Example
 
-#### Step 1: Add known faces to database
+### Step 1: Add known faces to database
 
 Adding known faces to the database that the system will recognize is possible through the following two methods:
 
@@ -52,6 +52,7 @@ Adding known faces to the database that the system will recognize is possible th
 2. File - adding a known face from a .jpg file
    
 **Folder Loop**
+
 The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
 
 ```markdown
@@ -101,7 +102,7 @@ frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
 frs.addFacesUsingLoop(BASE)
 ```
 
-#### Step 2: Recognize known faces
+### Step 2: Recognize known faces
 
 After running the command below, the webcam window will pop up and display frames with detected face identities. If the person in the camera was not added to the database, it will say "Unknown".
 
@@ -111,7 +112,7 @@ $ python3 frsapp/face_recognizer.py
 
 ![Face Recognizer Example](static/img/1.png)
 
-#### Step 3: Recognize face masks
+### Step 3: Recognize face masks
 Running the following command will display a webcam window with detected face masks ("Mask"/"No Mask").
 
 ```markdown
@@ -120,7 +121,7 @@ $ python3 frsapp/mask_recognizer.py
 
 ![Face Recognizer Example](static/img/2.png)
 
-#### Step 4: Recognize face masks or known faces
+### Step 4: Recognize face masks or known faces
 
 Running the following command will display a webcam window with detected face masks. If a face mask is not present on the face, it will detect person's name if known, otherwise "Unknown" label will be displayed.
 
