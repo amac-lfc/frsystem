@@ -1,6 +1,6 @@
 # Face Recognition Project
 
-> A gentle exploration of Deep Learning in the context of Face Recognition.
+> An out of the box face recogniton python package designed for experiments with real-time face mask detection.
 
 ## Table of Contents
 
@@ -14,10 +14,11 @@
 
 ### Installation
 
+If you don't have **pipenv** virtualenv manager for your projects, use the command below to install
 ```markdown
 $ pip install pipenv 
 ```
-
+Make sure your present working directory is the root of the project and run the commands below. This will create a virtual environment for the project and install all required packages.
 ```markdown
 $ pipenv install
 
@@ -28,28 +29,30 @@ $ pipenv shell
 
 ### frsystem
 
-Contains a program designed as a system for experimenting with face recognition. 
+Contains a package designed as a system for experimenting with face recognition. 
 
-### MaskFaceRecognition
-Contains a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection, and a program that uses the system from FaceRecognition folder to classify a face mask in real time.
 
-Contains a program that uses the system from FaceRecognition folder combined with the best face mask model from MaskRecognition to detect a face mask or name of the person (if known to the system) not wearing a face mask.
+### frapp
+**mask_no_mask_classifier.ipynb** a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection
+
+**mask_recognizer.py** a program that uses frsystem and the best model (Xception) obtained from the notebook to classify a face mask on webcam.
+
+**face_recognizer.py** a program that uses frsystem to classify known faces on webcam.
+
+**mask_face_recognizer.py** a program that uses frsystem and the face mask model to detect known faces without a mask on webcam.
 
 ## Usage Example
 
-### 1. Add Faces to database of known faces
+#### Step 1: Add known faces to database
 
 Adding known faces to the database that the system will recognize is possible through the following two methods:
 
-1. **Manual**
-    1. Camera - adding a known face through the webcam
+ **Manual**
+1. Camera - adding a known face through the webcam. When webcam window pops up, hit **ENTER** to take a picture of your face. Hit **ESC** to quit.
 
-        When webcam window pops up, hit **ENTER** to take a picture of your face.
-
-        Hit **ESC** to quit.
-
-    2. File - adding a known face from a .jpg file
-2. **Folder Loop**
+2. File - adding a known face from a .jpg file
+   
+**Folder Loop**
 
     The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
 
