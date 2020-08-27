@@ -31,8 +31,7 @@ $ pipenv shell
 
 Contains a package designed as a system for experimenting with face recognition. 
 
-
-### frapp
+### frsapp
 **mask_no_mask_classifier.ipynb** a jupyter notebook that covers experiments with transfer learning to determine the best model in terms of face mask detection
 
 **mask_recognizer.py** a program that uses frsystem and the best model (Xception) obtained from the notebook to classify a face mask on webcam.
@@ -55,29 +54,51 @@ Adding known faces to the database that the system will recognize is possible th
 **Folder Loop**
 The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
 
-    ```markdown
-    jpg/
-       Elon Musk/
-          - face1.jpg # image names can be anything
-          - face2.jpg
-          - face3.jpg
-          - face4.jpg
-          - face5.jpg
-       Johnny Ive/
-          - face1.jpg
-		...
-          - face5.jpg
-    ```
-**Example with manual**
-
-**Example with folder loop**
-
 ```markdown
-$ python3 add_faces.py
+jpg/
+    Elon Musk/
+      - face1.jpg # image names can be anything
+      - face2.jpg
+      - face3.jpg
+      - face4.jpg
+      - face5.jpg
+    Johnny Ive/
+      - face1.jpg
+	  ...
+      - face5.jpg
+```
+**Example with manual**
+```python
+from frsystem.frs import FaceRecognitionSystem
 
-$ add faces to database manually or through folder loop? type '1' or '2': 2
+EMBEDDING_MODEL = "facenet"
+WEIGHTS = "util/facenet_keras.h5"
+DB = "data/db.pkl"
+EMBEDDINGS = "data/embeddings.pkl"
+    
+frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+                            weights=WEIGHTS,
+                            db_file=DB, 
+                            embeddings_file=EMBEDDINGS)
 
-$ Embeddings added to database.
+frs.addFaceToDatabase("Elon Musk", method="camera") # default method is "file"
+```
+**Example with folder loop**
+```python
+from frsystem.frs import FaceRecognitionSystem
+
+EMBEDDING_MODEL = "facenet"
+WEIGHTS = "util/facenet_keras.h5"
+DB = "data/db.pkl"
+EMBEDDINGS = "data/embeddings.pkl"
+BASE = "jpg/"
+
+frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+                            weights=WEIGHTS,
+                            db_file=DB, 
+                            embeddings_file=EMBEDDINGS)
+                            
+frs.addFacesUsingLoop(BASE)
 ```
 
 #### Step 2: Recognize known faces
