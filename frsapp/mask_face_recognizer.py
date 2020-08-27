@@ -1,6 +1,3 @@
-# import sys
-# sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
-
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
@@ -16,7 +13,7 @@ from frsystem.frs import FaceRecognitionSystem
 
 def maskFaceRecognizer(frs):
     #load my mask recognition model
-    mask_classifier = load_model("models/xception")
+    mask_classifier = load_model(os.path.join("frsapp","models","xception"))
 
     webcam = cv2.VideoCapture(0) 
 
@@ -92,14 +89,12 @@ def maskFaceRecognizer(frs):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
+    
     EMBEDDING_MODEL = "facenet"
-    WEIGHTS = "../util/facenet_keras.h5"
-    FACE_CLASSIFIER = "../util/face_classifier.pkl"
-    DB = "../data/db.pkl"
-    EMBEDDINGS = "../data/embeddings.pkl"
-    # If using vggface model uncomment the two lines below
-    # DB = "data/db_vggface.pkl"
-    # EMBEDDINGS = "data/embeddings_vggface.pkl"
+    WEIGHTS = os.path.join("util", "facenet_keras.h5")
+    FACE_CLASSIFIER = os.path.join("util", "face_classifier.pkl")
+    DB = os.path.join("data", "db.pkl")
+    EMBEDDINGS = os.path.join("data", "embeddings.pkl")
     
     frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
                                weights=WEIGHTS,

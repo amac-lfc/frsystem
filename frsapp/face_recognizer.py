@@ -1,11 +1,8 @@
-# import sys
-# sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
-
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-from os import environ
-environ['TF_CPP_MIN_LOG_LEVEL']='3'
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
 import cv2
 from  numpy import argmin
@@ -104,13 +101,10 @@ def faceRecognizer(frs):
 if __name__ == "__main__":
     
     EMBEDDING_MODEL = "facenet"
-    WEIGHTS = "../util/facenet_keras.h5"
-    FACE_CLASSIFIER = "../util/face_classifier.pkl"
-    DB = "../data/db.pkl"
-    EMBEDDINGS = "../data/embeddings.pkl"
-    # If using vggface model uncomment the two lines below
-    # DB = "data/db_vggface.pkl"
-    # EMBEDDINGS = "data/embeddings_vggface.pkl"
+    WEIGHTS = os.path.join("util", "facenet_keras.h5")
+    FACE_CLASSIFIER = os.path.join("util", "face_classifier.pkl")
+    DB = os.path.join("data", "db.pkl")
+    EMBEDDINGS = os.path.join("data", "embeddings.pkl")
     
     frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
                                weights=WEIGHTS,

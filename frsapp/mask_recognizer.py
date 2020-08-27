@@ -1,6 +1,3 @@
-# import sys
-# sys.path.insert(1, '/Users/newuser/Projects/facialdetection/')
-
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
@@ -17,7 +14,7 @@ from frsystem.frs import FaceRecognitionSystem
 
 def maskRecognizer(frs):
     #load my mask recognition model
-    mask_classifier = load_model("models/xception")
+    mask_classifier = load_model(os.path.join("frsapp","models","xception"))
 
     webcam = cv2.VideoCapture(0) 
 
