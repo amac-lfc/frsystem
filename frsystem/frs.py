@@ -8,7 +8,6 @@ import pickle
 import numpy as np
 from .models import *
 from mtcnn import MTCNN
-from sklearn.linear_model import LogisticRegression
 from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
 class FaceRecognitionSystem(object):
@@ -58,7 +57,7 @@ Loading Face Recognition System...""")
             self.predictor, self.face_size = embeddingsPredictor(which=embedding_model, path=weights)
         
         if "db_file" in kwargs:
-            self.connection = DatabaseConnection(**kwargs)
+            self.connection = Database(**kwargs)
             self.db = self.connection.db
             self.embeddings = self.connection.embeddings
             
@@ -332,7 +331,7 @@ Loading Face Recognition System...""")
     
         return name    
     
-    def addEmbeddingsFromFile(self, filename, name):
+    def __addEmbeddingsFromFile(self, filename, name):
         """
         ### Description
             Adds new face embeddings containing extracted features from a given image. 
@@ -364,7 +363,7 @@ Loading Face Recognition System...""")
         else:
             print("No faces detected in the given image.")
     
-    def addEmbeddingsFromCamera(self, name):
+    def __addEmbeddingsFromCamera(self, name):
         """
         ### Description
             Using webcam adds new face embeddings containing extracted features to database. 
@@ -423,9 +422,39 @@ Loading Face Recognition System...""")
             if 'face_embedding' in locals():
                 self.connection.dumpEmbeddings()
 
+    def addFaceToDatabase(self, name, method="file"):
+	
+        if method not in ("file", "camera"):
+            raise AttributeError("Invalid value for method. Please use 'file' or 'camera'.")
+               
+        if method == "camera":
+            self.__addEmbeddingsFromCamera(name)
+
+        else:
+            import re
+            from tkinter import Tk
+            from tkinter.filedialog import askopenfilename
             
+            regex = re.compile('[0-9_\.\/_]+.jpg')
+            root = Tk()
+            root.withdraw()
+            filename = askopenfilename(title='Select Image file')
+            
+            self.__addEmbeddingsFromFile(filename, name)        
     
-class DatabaseConnection(object):
+    def addFacesUsingLoop(self, base):
+        
+        import os
+        for folder in os.listdir(base):
+            if folder[0] == ".":
+                continue
+
+            path = os.path.join(base, folder)
+            for image in os.listdir(path):
+                if image[0] == ".":
+                    continue
+                self.addEmbeddingsFromFile(os.path.join(path, image), folder)
+class Database(object):
     """
     ### Description 
         This class creates a database object which has the following functionalities:
