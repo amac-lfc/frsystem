@@ -15,7 +15,7 @@ from tensorflow.keras.applications.xception import preprocess_input
 from frsystem.frs import FaceRecognitionSystem
 
 
-def maskRecognizer(fr):
+def maskRecognizer(frs):
     #load my mask recognition model
     mask_classifier = load_model("models/xception")
 
@@ -26,7 +26,7 @@ def maskRecognizer(fr):
         _,frame = webcam.read()
         img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # BGR to RGB color channels	
         
-        face_loc, face_features = fr.detectFaces(img)
+        face_loc, face_features = frs.detectFaces(img)
         
         if face_features:
                 
@@ -90,9 +90,9 @@ def maskRecognizer(fr):
 
 if __name__ == "__main__":
     
-    fr = FaceRecognitionSystem()
+    frs = FaceRecognitionSystem()
     
-    maskRecognizer(fr)
+    maskRecognizer(frs)
 
 
 

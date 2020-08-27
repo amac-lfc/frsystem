@@ -14,7 +14,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.applications.xception import preprocess_input
 from frsystem.frs import FaceRecognitionSystem
 
-def maskFaceRecognizer(fr):
+def maskFaceRecognizer(frs):
     #load my mask recognition model
     mask_classifier = load_model("models/xception")
 
@@ -25,7 +25,7 @@ def maskFaceRecognizer(fr):
         _,frame = webcam.read()
         img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) # BGR to RGB color channels	
         
-        face_loc, face_features = fr.detectFaces(img)
+        face_loc, face_features = frs.detectFaces(img)
         
         if face_features:
                 
@@ -50,7 +50,7 @@ def maskFaceRecognizer(fr):
                     label = "Mask: {:.2f}%".format(mask * 100)
                     color = (0, 180, 0) 
                 else:
-                    label = fr.identifyPerson(img, 
+                    label = frs.identifyPerson(img, 
                                         [(startX, startY, endX, endY)], 
                                         [feature])
                     color = (0, 60, 255) 
@@ -101,10 +101,10 @@ if __name__ == "__main__":
     # DB = "data/db_vggface.pkl"
     # EMBEDDINGS = "data/embeddings_vggface.pkl"
     
-    fr = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+    frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
                                weights=WEIGHTS,
                                face_classifier=FACE_CLASSIFIER,
                                db_file=DB, 
                                embeddings_file=EMBEDDINGS)
 
-    maskFaceRecognizer(fr)
+    maskFaceRecognizer(frs)

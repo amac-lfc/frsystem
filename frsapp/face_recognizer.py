@@ -50,9 +50,9 @@ def drawDetections(db,
 	
     return frame
 							
-def faceRecognizer(fr):
+def faceRecognizer(frs):
 
-    known_face_embeddings, known_face_names = getEmbeddingsList(fr.embeddings)
+    known_face_embeddings, known_face_names = getEmbeddingsList(frs.embeddings)
     webcam = cv2.VideoCapture(0)
 
     while webcam.isOpened():
@@ -62,12 +62,12 @@ def faceRecognizer(fr):
         rgb_small_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		# Only process every other frame of video to save time
         # Find all the faces and face embeddings in the current frame of video
-        face_locations, facial_features = fr.detectFaces(rgb_small_frame)
+        face_locations, facial_features = frs.detectFaces(rgb_small_frame)
 
         if len(face_locations) == 0:
             continue
 
-        face_embeddings = fr.faceEmbeddings(rgb_small_frame, 
+        face_embeddings = frs.faceEmbeddings(rgb_small_frame, 
                                             face_locations=face_locations, 
                                             facial_features=facial_features)
 
@@ -89,7 +89,7 @@ def faceRecognizer(fr):
                     name = "Unknown"
                 face_names.append(name)
 
-        processed_frame = drawDetections(fr.db, 
+        processed_frame = drawDetections(frs.db, 
                                          frame, 
                                          face_locations, 
                                          face_names)
@@ -112,10 +112,10 @@ if __name__ == "__main__":
     # DB = "data/db_vggface.pkl"
     # EMBEDDINGS = "data/embeddings_vggface.pkl"
     
-    fr = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+    frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
                                weights=WEIGHTS,
                                face_classifier=FACE_CLASSIFIER,
                                db_file=DB, 
                                embeddings_file=EMBEDDINGS)
       
-    faceRecognizer(fr)
+    faceRecognizer(frs)
