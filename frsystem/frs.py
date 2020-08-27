@@ -453,7 +453,7 @@ Loading Face Recognition System...""")
             for image in os.listdir(path):
                 if image[0] == ".":
                     continue
-                self.addEmbeddingsFromFile(os.path.join(path, image), folder)
+                self.__addEmbeddingsFromFile(os.path.join(path, image), folder)
 class Database(object):
     """
     ### Description 
@@ -473,22 +473,19 @@ class Database(object):
         self.embeddings_file = embeddings_file
         try:
             with open(self.db_file, "rb") as f:
-                db = pickle.load(f)
+                self.db = pickle.load(f)
                 
             with open(self.embeddings_file, "rb") as f2:
-                embeddings = pickle.load(f2)  
+                self.embeddings = pickle.load(f2)  
         except:
             print("No db file exists. Creating new one")
-            db = {}
-            embeddings = {}
+            self.db = {}
+            self.embeddings = {}
             with open(self.db_file, "wb") as f:
-                pickle.dump(db)
+                pickle.dump(self.db, f)
             
             with open(self.embeddings_file, "wb") as f2:
-                pickle.dump(embeddings)
-            
-        self.db = db
-        self.embeddings = embeddings
+                pickle.dump(self.embeddings, f2)
         
     def dumpEmbeddings(self):
         """
