@@ -12,44 +12,28 @@ from tensorflow.keras.applications.imagenet_utils import preprocess_input
 
 class FaceRecognitionSystem(object):
     
-    """
-    ### Description
-        Face Recognition System creates an instance of the class with the following capabilities:
-        1. Face Detection with detectFaces, faceLocations, facialFeatures functions.
-        2. Face Features extraction with faceEmbeddings functions.
-        3. Face alignment for better face recognition.
-        4. Faces comparison with faceDistance and compareFaces.
-        5. Add face to database through camera
-        6. Add face to database from file (can use folder loop to add multiple faces at once)
-        
-        Face Recognition relies on two pickle files:
-        1. pickle file containing dictionary {id : name} of known faces.
-        2. pickle file containing dictionary {id : listOfEmbeddings} of known faces.
-        
-    """
     def __init__(self,
                  embedding_model=None,
                  weights=None,
                  face_classifier=None, 
                  **kwargs): 
+        
         """
         ### Description
-            1. Initializes MTCNN Face detection model.
-            2. Initializes FaceNet or VGGFace model to extract embeddings from face images.
-            3. Connects to Database through DatabaseConnection class.
-            4. assigns to instance variable a dictionary {id : name} of known faces from the database.
-            5. assigns to instance variable a dictionary {id : listOfEmbeddings} of known faces from the database.
-            6. assingns to instance variable the desired face size required for the embeddings model.
+            Face Recognition System creates an instance of the class with the following capabilities:
+            1. Calls MTCNN face detection model object.
+            2. Calls FaceNet or VGGFace model to extract embeddings (features) from face images.
+            3. Creates a connection to the database of known faces by calling the "Database" class object. 
+                - self.db is the dictionary of known faces with id : name key-value pairs.
+                - self.embeddings is the dictionary of known faces with id : embeddings key-value pairs.
+            4. Loads face classifier that was trained on the database of known faces.
 
-        ### Args:
-            'face_size' (int): face size required for the embeddings model e.g 160.
+        ### Args
+            'embedding_model' (str): name of the desired feature extractor 'facenet' or 'vggface'. Defaults to 'facenet'.
             'names_pkl' (str): path to pickle file containing dictionary {id : name} of known faces.
             'embeddings_pkl' (str):  path to pickle file containing dictionary {id : listOfEmbeddings} of known faces.
-            
         """
-        print("""
-**********************************
-Loading Face Recognition System...""")
+        print("Loading Face Recognition System...")
         
         self.detector = MTCNN()
         
@@ -71,7 +55,7 @@ Loading Face Recognition System...""")
                       face_location=None, 
                       facial_features=None):
         """
-        This function take an image containing face, 
+        This function takes an image containing face, 
         aligns the face so that eyes are horizontal,
         and crops to given face size dimension.
 
@@ -114,9 +98,9 @@ Loading Face Recognition System...""")
         desired_face_height = face_size
 
         # determine the scale of the new resulting image by taking
-        # the ratio of the distance between eyes in the *current*
+        # the ratio of the distance between eyes in the current
         # image to the ratio of distance between eyes in the
-        # *desired* image
+        # desired image
         dist = np.sqrt((dX ** 2) + (dY ** 2))
         desiredDist = (desired_right_eye_x - desired_left_eye[0])
         desiredDist *= desired_face_width
@@ -204,12 +188,15 @@ Loading Face Recognition System...""")
     def detectFaces(self, image):
         
         """
-        ### Description:
+        ### Description
             Finds faces on a given image array and 
             returns list of location coordinates and 
             facial features coordinates.
+        
+        ### Args
+            image (ndarray) : image containing faces
 
-        ### Returns:
+        ### Returns
             (list): list of face location bounding box coordinates
             (list): list of facial features dictionaries
             
@@ -225,7 +212,8 @@ Loading Face Recognition System...""")
                      {   
                         ...
                      }
-                   ]```
+                   ]
+        ```
         """
         faces = self.detector.detect_faces(image)
         bboxes = [] # face locations coordinates
