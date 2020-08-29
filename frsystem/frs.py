@@ -1,5 +1,12 @@
-import tensorflow as tf
+tf = None
+try:
+  tf = __import__("tensorflow-gpu")
+  tf.operation_that_requires_gpu()
+except:
+  tf = __import__("tensorflow")
+  
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+
 from os import environ
 environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
@@ -30,8 +37,11 @@ class FaceRecognitionSystem(object):
 
         ### Args
             'embedding_model' (str): name of the desired feature extractor 'facenet' or 'vggface'. Defaults to 'facenet'.
-            'names_pkl' (str): path to pickle file containing dictionary {id : name} of known faces.
-            'embeddings_pkl' (str):  path to pickle file containing dictionary {id : listOfEmbeddings} of known faces.
+            'weights' (str): path to the weights of chosen embedding model.
+            'face_classifier' (str): path to the face classifier model.
+            **kwargs:
+                'db_filel' (str): path to pickle file containing dictionary {id : name} of known faces.
+                'embeddings_file' (str):  path to pickle file containing dictionary {id : listOfEmbeddings} of known faces.
         """
         print("Loading Face Recognition System...")
         

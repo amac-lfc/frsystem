@@ -1,4 +1,10 @@
-import tensorflow as tf
+tf = None
+try:
+  tf = __import__("tensorflow-gpu")
+  tf.operation_that_requires_gpu()
+except:
+  tf = __import__("tensorflow")
+  
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 import os 
