@@ -4,6 +4,9 @@ dist: xenial
    
 python: "3.7"
 
+services:
+  - xvfb
+  
 install:
   - pip install pipenv
   - pipenv install
