@@ -5,4 +5,4 @@ opencv-python>=4.3.0.36
 scikit-learn>=0.23.2
 tensorflow>=2.2.0
 tensorflow-gpu>=2.2.0
-frsystem>=1.0.0
+frsystem>=1.1.0
