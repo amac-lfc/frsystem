@@ -1,4 +1,4 @@
-# frsystem v1.1.1
+# frsystem v1.1.2
 
 ## FaceRecognitionSystem class
 
