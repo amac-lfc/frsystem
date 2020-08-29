@@ -1,5 +1,5 @@
 # Face Recognition Project
-
+[![Build Status](https://travis-ci.org/amac-lfc/frsystem.svg?branch=master)](https://travis-ci.org/amac-lfc/frsystem) ![GitHub followers](https://img.shields.io/github/followers/arnursabet?label=Arnur%20Sabet&style=social) ![GitHub followers](https://img.shields.io/github/followers/arthbous?label=Arthur%20Bousquet&style=social)
 > An out of the box face recogniton python package designed for experiments with real-time face mask detection.
 
 ## Table of Contents
