@@ -1,8 +1,11 @@
 language: python
 
+dist:
+  -xenial
+
 os: 
   -osx
-  -linux
+   
 python:    
   - "3.7"
 
