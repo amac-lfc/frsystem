@@ -50,7 +50,23 @@ Adding known faces to the database that the system will recognize is possible th
 1. Webcam - adding a known face through the webcam. When webcam window pops up, hit **ENTER** to take a picture of your face. Hit **ESC** to quit.
 
 2. File - adding a known face from a .jpg file
-   
+
+**Example with manual**
+```python
+from frsystem.frs import FaceRecognitionSystem
+
+EMBEDDING_MODEL = "facenet"
+WEIGHTS = "util/facenet_keras.h5"
+DB = "data/db.pkl"
+EMBEDDINGS = "data/embeddings.pkl"
+    
+frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
+                            weights=WEIGHTS,
+                            db_file=DB, 
+                            embeddings_file=EMBEDDINGS)
+
+frs.addFaceToDatabase("Elon Musk", method="camera") # default method is "file"
+```   
 **Folder Loop**
 
 The following directory structure is required to process images through a folder loop. For accurate face recognition add at least 5 images per person.
@@ -67,22 +83,6 @@ jpg/
       - face1.jpg
 	  ...
       - face5.jpg
-```
-**Example with manual**
-```python
-from frsystem.frs import FaceRecognitionSystem
-
-EMBEDDING_MODEL = "facenet"
-WEIGHTS = "util/facenet_keras.h5"
-DB = "data/db.pkl"
-EMBEDDINGS = "data/embeddings.pkl"
-    
-frs = FaceRecognitionSystem(embedding_model=EMBEDDING_MODEL,
-                            weights=WEIGHTS,
-                            db_file=DB, 
-                            embeddings_file=EMBEDDINGS)
-
-frs.addFaceToDatabase("Elon Musk", method="camera") # default method is "file"
 ```
 **Example with folder loop**
 ```python
