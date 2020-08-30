@@ -15,7 +15,7 @@ import pickle
 import numpy as np
 from .models import *
 from mtcnn import MTCNN
-from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.applications.vgg19 import preprocess_input
 
 class FaceRecognitionSystem(object):
     

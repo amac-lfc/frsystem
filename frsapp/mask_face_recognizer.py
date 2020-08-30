@@ -42,7 +42,7 @@ def maskFaceRecognizer(frs):
                 (endX, endY) = (min(img.shape[1] - 1, endX), min(img.shape[0] - 1, endY))
                     
                 face = img[startY-20:endY+20, startX-20:endX+20]
-                face = cv2.resize(face, (229, 229))
+                face = cv2.resize(face, (299, 299))
                 face = img_to_array(face)
                 face = preprocess_input(face)
                 face = np.expand_dims(face, axis=0)
