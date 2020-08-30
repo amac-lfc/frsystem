@@ -5,7 +5,7 @@ with open("README-frsystem.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='frsystem',
-      version='1.1.3',
+      version='1.1.4',
       description='A system for experimenting with face recognition',
       long_description = long_description,
       long_description_content_type = "text/markdown",
