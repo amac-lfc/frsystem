@@ -29,6 +29,8 @@ install:
   - conda create -q -n frsystem python=$TRAVIS_PYTHON_VERSION mtcnn scikit-learn opencv tensorflow>=2.0.0
   - conda activate frsystem
   - pip install requests
+  - conda remove tensorflow
+  - conda install -c anaconda tensorflow>=2.0.0
   - python setup.py install
   - conda list
 script:
