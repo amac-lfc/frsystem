@@ -28,6 +28,7 @@ install:
   # Replace dep1 dep2 ... with your dependencies
   - conda create -q -n frsystem python=$TRAVIS_PYTHON_VERSION tensorflow>=2.0.0 mtcnn scikit-learn opencv
   - conda activate frsystem
+  - conda list
   - pip install requests
   - python setup.py install
 script:
