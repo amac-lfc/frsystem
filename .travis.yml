@@ -17,9 +17,12 @@ install:
   - conda info -a
 
   # Replace dep1 dep2 ... with your dependencies
-  - conda create -q -n frsystem mtcnn scikit-learn opencv
+  - conda create -q -n frsystem
   - conda activate frsystem
   - pip install requests
+  - conda install -c conda-forge mtcnn
+  - conda install -c conda-forge scikit-learn
+  - conda install -c conda-forge opencv
   - conda install -c anaconda tensorflow
   - python setup.py install
   - conda list
