@@ -24,7 +24,7 @@ install:
   - conda install -c conda-forge mtcnn
   - conda install -c conda-forge scikit-learn
   - conda install -c conda-forge opencv
-  - conda install -c anaconda tensorflow
+  - conda install -c anaconda tensorflow=2.0.0
   - python setup.py install
   - conda list
 script:
