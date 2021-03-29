@@ -19,7 +19,7 @@ from frsystem.frs import FaceRecognitionSystem
 
 def maskFaceRecognizer(frs):
     #load my mask recognition model
-    mask_classifier = load_model(os.path.join("frsapp","models","xception"))
+    mask_classifier = load_model(os.path.join("frsapp","models","xception.h5"))
 
     webcam = cv2.VideoCapture(0) 
 

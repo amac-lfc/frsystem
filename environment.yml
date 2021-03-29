@@ -1,0 +1,14 @@
+name: frsystem
+
+channels:
+  - conda-forge
+  - anaconda
+
+dependencies:
+  - mtcnn
+  - tensorflow>=2.0.0
+  - scikit-learn
+  - opencv
+  - pip: 
+    - frsystem
+    - requests

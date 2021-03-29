@@ -5,14 +5,15 @@ from imutils import face_utils
 from box_utils import *
 import os
 import onnx
-
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 import onnxruntime as ort
 
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
+#from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.xception import preprocess_input
+#from tensorflow.keras.applications.xception import preprocess_input
 
-from onnx_tf.backend import prepare
+#from onnx_tf.backend import prepare
 
 video_capture = cv2.VideoCapture(0)
 
@@ -22,9 +23,12 @@ onnx_model = onnx.load(onnx_path)
 ort_session = ort.InferenceSession(onnx_path)
 input_name = ort_session.get_inputs()[0].name
 
-mask_classifier = load_model(os.path.join("frsapp","models","xception"))
+#mask_classifier = load_model(os.path.join("frsapp","models","xception"))
 #shape_predictor = dlib.shape_predictor('FacialLandmarks/shape_predictor_5_face_landmarks.dat')
 #fa = face_utils.facealigner.FaceAligner(shape_predictor, desiredFaceWidth=112, desiredLeftEye=(0.3, 0.3))
+onnx_mask = 'frsapp/models/mask-xception-onnx.onnx'
+sess = ort.InferenceSession(onnx_mask)
+input_name_mask = sess.get_inputs()[0].name
 
 while True:
     ret, frame = video_capture.read()
@@ -41,6 +45,7 @@ while True:
         img = img.astype(np.float32)
 
         confidences, boxes = ort_session.run(None, {input_name: img})
+        #print(confidences, boxes)
         boxes, labels, probs = predict(w, h, confidences, boxes, 0.7)
 
         for i in range(boxes.shape[0]):
@@ -48,14 +53,28 @@ while True:
             x1, y1, x2, y2 = box
             
             rgb_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            
-            cropped_face = frame[y1:y2, x1:x2]
+            #print(rgb_img.shape)
+            cropped_face = rgb_img[y1:y2, x1:x2]
+            #print(cropped_face.shape)
             resized_face = cv2.resize(cropped_face, (299, 299))
-            face = img_to_array(resized_face)
+            #print(resized_face.shape)
+            face = image.img_to_array(resized_face)
+            #print(face.shape)
             face = preprocess_input(face)
             face = np.expand_dims(face, axis=0)
+            
+            #feed = dict([(input.name, x[n]) for n, input in enumerate(sess.get_inputs())])
+            pred_onnx = sess.run(None, {input_name_mask: face})[0]
+            #print(pred_onnx)
+            pred = np.squeeze(pred_onnx)
+            #print(pred)
+            (mask, no_mask) = pred
+            #top_inds = pred.argsort()[::-1][:5]
+            #print(top_inds)
+            #for i in top_inds:
+                #print('{:.3f}'.format(pred[i]))
 
-            (mask, no_mask) = mask_classifier.predict(face)[0]
+            #(mask, no_mask) = mask_classifier.predict(face)[0]
                     
             if mask > no_mask:
                 label = "Mask: {:.2f}%".format(mask * 100)

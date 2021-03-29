@@ -20,7 +20,7 @@ from frsystem.frs import FaceRecognitionSystem
 
 def maskRecognizer(frs):
     #load my mask recognition model
-    mask_classifier = load_model(os.path.join("frsapp","models","xception"))
+    mask_classifier = load_model(os.path.join("frsapp","models","xception.h5"))
 
     webcam = cv2.VideoCapture(0) 
 
@@ -49,7 +49,7 @@ def maskRecognizer(frs):
                 face = np.expand_dims(face, axis=0)
 
                 (mask, no_mask) = mask_classifier.predict(face)[0]
-                    
+                print(mask, no_mask)    
                 if mask > no_mask:
                     label = "Mask: {:.2f}%".format(mask * 100)
                     color = (0, 180, 0) 
