@@ -1,5 +1,5 @@
 # Face Recognition Project
-[![Build Status](https://travis-ci.org/amac-lfc/frsystem.svg?branch=master)](https://travis-ci.org/amac-lfc/frsystem) 
+<!--[![Build Status](https://travis-ci.org/amac-lfc/frsystem.svg?branch=master)](https://travis-ci.org/amac-lfc/frsystem)-->
 > An out of the box face recogniton python package designed for experiments with real-time face mask detection.
 
 ## Table of Contents
@@ -14,15 +14,11 @@
 
 ### Installation
 
-If you don't have **pipenv** virtualenv manager for your projects, use the command below to install.
+Make sure your present working directory is the root of the project and run the commands below. This will create a virtual environment for the project and install all required packages using **environment.yml** file.
 ```markdown
-$ pip install pipenv 
-```
-Make sure your present working directory is the root of the project and run the commands below. This will create a virtual environment for the project and install all required packages.
-```markdown
-$ pipenv install
+$ conda env create
 
-$ pipenv shell
+$ conda activate
 ```
 
 ## Folders Description
